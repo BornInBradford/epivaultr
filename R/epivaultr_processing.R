@@ -7,11 +7,12 @@ ev_read_variables <- function(file) {
   
   if(ext %in% c("txt", "csv", "tsv")) {
     
-    vars_tab <- read.table(file)
+    vars_tab <- tryCatch(vroom::vroom(file, show_col_types = FALSE, col_names = FALSE), 
+                         error = function(e) read.table(file))
     
   } else { # treat as excel
     
-    vars_tab <- read_excel(file)
+    vars_tab <- readxl::read_excel(file, col_names = FALSE)
     
   }
   
@@ -31,7 +32,7 @@ ev_read_variables <- function(file) {
   projects <- unique(vars_df$project)
   tables <- unique(vars_df$proj_table)
   
-  me <- list(vars_requested = varlist,
+  me <- list(vars_requested = vars,
              projects = projects,
              tables = tables,
              vars_df = vars_df)
