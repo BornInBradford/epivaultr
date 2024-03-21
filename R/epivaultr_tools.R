@@ -3,7 +3,7 @@ ev_connect <- function(ev_server = getOption("ev_server"),
                        ev_database = getOption("ev_database"),
                        ev_driver = dplyr::coalesce(getOption("ev_driver"), "SQL Server")) {
   
-  if(!is.character(ev_server) | !is.character(ev_database)) stop("`ev_server` and `ev_database` must be passed either as function parameters or using `options(...)`")
+  if(!is.character(ev_server) | !is.character(ev_database)) stop("You must specify `ev_server` and `ev_database` using `options(...)`")
   
   con <- DBI::dbConnect(odbc::odbc(), driver = ev_driver, server = ev_server, 
                         database = ev_database, Trusted_Connection = "True")

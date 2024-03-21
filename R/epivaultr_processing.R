@@ -44,3 +44,25 @@ ev_read_variables <- function(file) {
 }
 
 
+fetch_ev_data <- function(x, ...) {
+  
+  UseMethod("fetch_ev_data", x)
+  
+}
+
+fetch_ev_data.ev_variables <- function(ev_vars) {
+  
+  me <- list(data = list(),
+             metadata = list(),
+             request = ev_vars)
+  
+  tables <- get_ev_tables(ev_vars)
+  vars_df <- get_ev_vars_df(ev_vars)
+  
+  con <- ev_connect()
+  
+  
+  
+  ev_disconnect(con)
+  
+}
