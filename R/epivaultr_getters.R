@@ -35,7 +35,7 @@ get_ev_tables.ev_variables <- function(ev_vars) {
 
 get_ev_vars_requested <- function(x, ...) {
   
-  UseMethod("get_bb_vars_requested", x)
+  UseMethod("get_ev_vars_requested", x)
   
 }
 
@@ -51,7 +51,7 @@ get_ev_vars_requested.ev_variables <- function(ev_vars) {
 
 get_ev_vars_df <- function(x, ...) {
   
-  UseMethod("get_bb_vars_df", x)
+  UseMethod("get_ev_vars_df", x)
   
 }
 
