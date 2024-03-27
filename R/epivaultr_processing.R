@@ -78,7 +78,7 @@ sql_make_filter <- function(vals) {
 }
 
 
-fetch_ev_meta_vars <- function(con, ev_vars) {
+fetch_ev_meta_vars <- function(con, ev_vars, cats = FALSE) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
@@ -97,7 +97,7 @@ fetch_ev_meta_vars <- function(con, ev_vars) {
     tab_table <- strsplit(tab_table_id, ".", fixed = TRUE)[[1]][2]
     
     sql <- paste0("select * from metadata.",
-                  vars_df_t$project[t], "__", vars_df_t$table[t],
+                  tab_project, "__", tab_table,
                   "__variables")
     
     var_meta_t <- DBI::dbGetQuery(con, sql)
@@ -139,6 +139,20 @@ fetch_ev_meta_vars <- function(con, ev_vars) {
                     table = tab_table,
                     .before = 1)
     
+    if(cats) {
+      
+      sql <- paste0("select * from metadata.",
+                    tab_project, "__", tab_table,
+                    "__categories")
+      
+      cats_tab <- DBI::dbGetQuery(con, sql)
+      
+      var_meta_t <- var_meta_t |> dplyr::select(varfullname, table_id, project, table, variable) |>
+        dplyr::inner_join(cats_tab, by = "variable")
+      
+    }
+    
+    
     var_meta <- var_meta |> dplyr::bind_rows(var_meta_t)
     
   }
@@ -162,15 +176,6 @@ fetch_ev_meta_tabs <- function(con, ev_vars) {
   tab_meta <- DBI::dbGetQuery(con, sql)
   
   return(tab_meta)
-  
-}
-
-
-fetch_ev_meta_cats <- function(con, ev_vars) {
-  
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
-  
-
   
 }
 

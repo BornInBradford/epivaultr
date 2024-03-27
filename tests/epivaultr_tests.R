@@ -21,6 +21,9 @@ options(ev_database = "ResearchWarehouse")
 con <- ev_connect()
 
 tabs1 <- fetch_ev_meta_tabs(con, v2)
-vars1 <- fetch_ev_meta_vars(con, v2)
+vars1 <- fetch_ev_meta_vars(con, v1)
+
+vars2 <- fetch_ev_meta_vars(con, v2)
+cats2 <- fetch_ev_meta_vars(con, v2, cats = TRUE)
 
 ev_disconnect(con)
