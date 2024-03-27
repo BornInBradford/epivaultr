@@ -78,12 +78,14 @@ sql_make_filter <- function(vals) {
 }
 
 
-fetch_ev_meta_vars <- function(con, ev_vars, cats = FALSE) {
+fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
   tables <- get_ev_tables(ev_vars)
   vars_df <- get_ev_vars_df(ev_vars)
+  
+  ev_message("Fetching ", ifelse(cats, "categorical", "variable"), " metadata for ", length(tables), " table(s)")
   
   var_meta <- data.frame()
   
@@ -98,11 +100,12 @@ fetch_ev_meta_vars <- function(con, ev_vars, cats = FALSE) {
     
     sql <- paste0("select * from metadata.",
                   tab_project, "__", tab_table,
-                  "__variables")
+                  "__variables where visibility <= ", visibility)
     
     var_meta_t <- DBI::dbGetQuery(con, sql)
     
-    if(!is.data.frame(var_meta_t) | nrow(var_meta_t) == 0) stop(paste0("Cannot find valid variable metadata for table ", tab_table_id))
+    if(!is.data.frame(var_meta_t) | nrow(var_meta_t) == 0) stop(paste0("Cannot find valid variable metadata for table ", tab_table_id,
+                                                                       " with visibility ", visibility))
     
     vars_t <- var_meta_t$variable
     
@@ -129,7 +132,8 @@ fetch_ev_meta_vars <- function(con, ev_vars, cats = FALSE) {
     vars_not_found <- grep(pattern = "\\*|\\?", x = vars_search, value = TRUE, invert = TRUE) |>
       setdiff(vars_found)
     
-    if(length(vars_not_found) > 0) warning(paste0(length(vars_not_found), " variable(s) not found in `", tab_table_id, "`: ",
+    if(length(vars_not_found) > 0) warning(paste0(length(vars_not_found), " variable(s) not found in `", tab_table_id, "` with visibility ",
+                                                  visibility, ": ",
                                                   paste0("`", vars_not_found, "`", collapse = ", ")))
       
     var_meta_t <- var_meta_t |> dplyr::filter(variable %in% vars_found) |>
@@ -169,18 +173,22 @@ fetch_ev_meta_tabs <- function(con, ev_vars) {
   
   tables <- get_ev_tables(ev_vars)
   
+  ev_message("Fetching table metadata for ", length(tables), " table(s)")
+  
   sql <- paste0("select * from data_vis0.DataDictionary__metadata_table where table_id in (",
                 sql_make_filter(tables), 
                 ");")
   
   tab_meta <- DBI::dbGetQuery(con, sql)
   
+  if(!is.data.frame(tab_meta) | nrow(tab_meta) == 0) stop(paste0("Cannot find valid table metadata"))
+  
   return(tab_meta)
   
 }
 
 
-fetch_ev_data <- function(con, ev_vars) {
+fetch_ev_data <- function(con, ev_vars, visibility = 0) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
@@ -188,14 +196,19 @@ fetch_ev_data <- function(con, ev_vars) {
              metadata = list(),
              request = ev_vars)
   
-  meta_vars <- fetch_ev_meta_vars(ev_vars)
-  meta_tabs <- fetch_ev_meta_tabs(ev_vars)
-  meta_cats <- fetch_ev_meta_cats(ev_vars)
+  meta_vars <- fetch_ev_meta_vars(con, ev_vars, visibility)
+  meta_tabs <- fetch_ev_meta_tabs(con, ev_vars)
+  meta_cats <- fetch_ev_meta_vars(con, ev_vars, visibility, cats = TRUE)
   
+  for(t in nrow(meta_tabs)) {
+    
+    ev_message("Fetching data from ", meta_tabs$table_id[t])
+    
+    tab_data <- fetch_ev_table(con, project, table, visibility)
+    
+  }
   
-  tables <- get_ev_tables(ev_vars)
-  vars_df <- get_ev_vars_df(ev_vars)
-  
+
 }
 
 

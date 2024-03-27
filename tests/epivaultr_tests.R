@@ -26,4 +26,7 @@ vars1 <- fetch_ev_meta_vars(con, v1)
 vars2 <- fetch_ev_meta_vars(con, v2)
 cats2 <- fetch_ev_meta_vars(con, v2, cats = TRUE)
 
+vars3 <- fetch_ev_meta_vars(con, v2, visibility = 9)
+cats3 <- fetch_ev_meta_vars(con, v2, visibility = 9, cats = TRUE)
+
 ev_disconnect(con)
