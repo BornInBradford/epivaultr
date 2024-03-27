@@ -23,5 +23,4 @@ con <- ev_connect()
 tabs1 <- fetch_ev_meta_tabs(con, v2)
 vars1 <- fetch_ev_meta_vars(con, v2)
 
-
 ev_disconnect(con)

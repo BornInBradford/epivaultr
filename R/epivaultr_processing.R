@@ -78,36 +78,37 @@ sql_make_filter <- function(vals) {
 }
 
 
-fetch_ev_meta_vars <- function(con, ev_vars, cats = FALSE) {
+fetch_ev_meta_vars <- function(con, ev_vars) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
   tables <- get_ev_tables(ev_vars)
   vars_df <- get_ev_vars_df(ev_vars)
   
-  tab_meta <- fetch_ev_meta_tabs(con, ev_vars)
-  
-  if(!is.data.frame(tab_meta) | nrow(tab_meta) == 0) stop("Cannot find valid table metadata for request!")
-  
   var_meta <- data.frame()
   
   # create unions of selects over each table by table
-  for(t in 1:nrow(tab_meta)) {
+  for(t in 1:length(tables)) {
+    
+    vars_df_t <- vars_df |> dplyr::filter(proj_table == tables[t])
+    
+    tab_table_id <- tables[t]
+    tab_project <- strsplit(tab_table_id, ".", fixed = TRUE)[[1]][1]
+    tab_table <- strsplit(tab_table_id, ".", fixed = TRUE)[[1]][2]
     
     sql <- paste0("select * from metadata.",
-                  tab_meta$project_name[t], "__", tab_meta$table_name[t],
-                  "__", ifelse(cats, "categories", "variables"))
+                  vars_df_t$project[t], "__", vars_df_t$table[t],
+                  "__variables")
     
     var_meta_t <- DBI::dbGetQuery(con, sql)
     
-    if(!is.data.frame(var_meta_t) | nrow(var_meta_t) == 0) stop(paste0("Cannot find valid variable metadata for table ", tab_meta$table_id[t]))
+    if(!is.data.frame(var_meta_t) | nrow(var_meta_t) == 0) stop(paste0("Cannot find valid variable metadata for table ", tab_table_id))
     
     vars_t <- var_meta_t$variable
     
     vars_t_required <- var_meta_t |> dplyr::filter(required == 1) |> dplyr::pull(variable)
     
-    vars_search <- vars_df |> dplyr::filter(proj_table == tab_meta$table_id[t]) |>
-      dplyr::select(variable) |> dplyr::pull()
+    vars_search <- vars_df_t |> dplyr::select(variable) |> dplyr::pull()
     
     # simple search to start with
     vars_found <- intersect(vars_t, vars_search)
@@ -128,10 +129,10 @@ fetch_ev_meta_vars <- function(con, ev_vars, cats = FALSE) {
     vars_found <- c(vars_t_required, vars_found) |> unique()
     
     var_meta_t <- var_meta_t |> dplyr::filter(variable %in% vars_found) |>
-      dplyr::mutate(varfullname = paste0(tab_meta$table_id[t], ".", variable),
-                    table_id = tab_meta$table_id[t],
-                    project = tab_meta$project_name[t],
-                    table = tab_meta$table_name[t],
+      dplyr::mutate(varfullname = paste0(tab_table_id, ".", variable),
+                    table_id = tab_table_id,
+                    project = tab_project,
+                    table = tab_table,
                     .before = 1)
     
     var_meta <- var_meta |> dplyr::bind_rows(var_meta_t)
@@ -161,9 +162,11 @@ fetch_ev_meta_tabs <- function(con, ev_vars) {
 }
 
 
-fetch_ev_meta_cats <- function(ev_vars) {
+fetch_ev_meta_cats <- function(con, ev_vars) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  
+
   
 }
 
