@@ -233,7 +233,9 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
                                                                visibility = query_vis, variables = tab_var_filter)
     
     
-    tab_data <- tab_data |> label_ev_variables(tab_vars, tab_cats)
+    # NB do value type transforms THEN label otherwise labels get dropped
+    tab_data <- tab_data |> set_ev_val_types(tab_vars) |>
+      label_ev_variables(tab_vars, tab_cats)
     
     me$data <- append(me$data, list(tab_data))
     
@@ -314,7 +316,20 @@ label_ev_variables <- function(df, vars_df, cats_df) {
 
 set_ev_val_types <- function(df, vars_df) {
   
-  
+  if(nrow(vars_df) > 0) {
+    
+    for(v in 1:nrow(vars_df)) {
+      
+      if(vars_df$value_type[v] == "text" & class(df[[v]]) != "character") df <- df |> dplyr::mutate(!!vars_df$variable[v] := as.character(df[[v]]))
+      if(vars_df$value_type[v] == "integer" & class(df[[v]]) != "integer") df <- df |> dplyr::mutate(!!vars_df$variable[v] := as.integer(df[[v]]))
+      if(vars_df$value_type[v] == "float" & class(df[[v]]) != "numeric") df <- df |> dplyr::mutate(!!vars_df$variable[v] := as.numeric(df[[v]]))
+      if(vars_df$value_type[v] == "categorical" & class(df[[v]]) != "integer") df <- df |> dplyr::mutate(!!vars_df$variable[v] := as.integer(df[[v]]))
+      if(vars_df$value_type[v] == "date" & class(df[[v]]) != "Date") df <- df |> dplyr::mutate(!!vars_df$variable[v] := as.Date(df[[v]]))
+      if(vars_df$value_type[v] == "boolean" & class(df[[v]]) != "integer") df <- df |> dplyr::mutate(!!vars_df$variable[v] := as.integer(df[[v]]))
+      
+    }
+    
+  }
   
   return(df)
   
