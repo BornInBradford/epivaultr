@@ -220,17 +220,20 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
     
     tab_cats <- meta_cats |> dplyr::filter(table_id == tab_table_id)
     
-    tab_vars <- meta_vars |> dplyr::filter(table_id == tab_table_id) |> dplyr::pull(variable)
+    tab_vars <- meta_vars |> dplyr::filter(table_id == tab_table_id)
+    
+    tab_var_filter <- tab_vars |> dplyr::pull(variable)
     
     # do we need to filter?
-    if(length(tab_vars) == tab_nvars) tab_vars <- character(0)
+    if(length(tab_var_filter) == tab_nvars) tab_var_filter <- character(0)
     
     if(sql_type == "table") tab_data <- fetch_ev_table(con, project = tab_project, table = tab_table, 
-                                                       visibility = query_vis, variables = tab_vars)
+                                                       visibility = query_vis, variables = tab_var_filter)
     if(sql_type == "procedure") tab_data <- fetch_ev_procedure(con, project = tab_project, table = tab_table, 
-                                                               visibility = query_vis, variables = tab_vars)
+                                                               visibility = query_vis, variables = tab_var_filter)
     
     
+    tab_data <- tab_data |> label_ev_variables(tab_vars, tab_cats)
     
     me$data <- append(me$data, list(tab_data))
     
@@ -278,6 +281,42 @@ fetch_ev_procedure <- function(con, project, table, visibility = 0, variables = 
   if(length(variables) > 0) tab_data <- tab_data |> dplyr::select(all_of(variables))
   
   return(tab_data)
+  
+}
+
+
+label_ev_variables <- function(df, vars_df, cats_df) {
+  
+  if(nrow(cats_df) > 0) {
+    for(vlab in 1:nrow(cats_df)) {
+      
+      new_vlab <- cats_df$value[vlab]
+      names(new_vlab) <- cats_df$label[vlab]
+      
+      df <- df |> labelled::add_value_labels(!!cats_df$variable[vlab] := new_vlab)
+      
+    }
+  }
+  
+  if(nrow(vars_df) > 0) {
+    
+    new_labs <- vars_df$label
+    names(new_labs) <- vars_df$variable
+    
+    df <- df |> labelled::set_variable_labels(.labels = new_labs)
+    
+  }
+  
+  return(df)
+  
+}
+
+
+set_ev_val_types <- function(df, vars_df) {
+  
+  
+  
+  return(df)
   
 }
 
