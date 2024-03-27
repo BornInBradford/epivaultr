@@ -200,16 +200,84 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
   meta_tabs <- fetch_ev_meta_tabs(con, ev_vars)
   meta_cats <- fetch_ev_meta_vars(con, ev_vars, visibility, cats = TRUE)
   
-  for(t in nrow(meta_tabs)) {
+  # what visibility level do we need to query to get all variables we can see
+  query_vis <- max(meta_vars$visibility)
+  
+  for(t in 1:nrow(meta_tabs)) {
     
     ev_message("Fetching data from ", meta_tabs$table_id[t])
     
-    tab_data <- fetch_ev_table(con, project, table, visibility)
+    tab_data <- data.frame()
+    
+    tab_table_id <- meta_tabs$table_id[t]
+    tab_project <- meta_tabs$project_name[t]
+    tab_table <- meta_tabs$table_name[t]
+    tab_nvars <- meta_tabs$n_variables[t]
+    
+    type_col <- paste0("sql_type_vis", query_vis)
+    
+    sql_type <- dplyr::select(meta_tabs, !!!type_col)[t, 1]
+    
+    tab_cats <- meta_cats |> dplyr::filter(table_id == tab_table_id)
+    
+    tab_vars <- meta_vars |> dplyr::filter(table_id == tab_table_id) |> dplyr::pull(variable)
+    
+    # do we need to filter?
+    if(length(tab_vars) == tab_nvars) tab_vars <- character(0)
+    
+    if(sql_type == "table") tab_data <- fetch_ev_table(con, project = tab_project, table = tab_table, 
+                                                       visibility = query_vis, variables = tab_vars)
+    if(sql_type == "procedure") tab_data <- fetch_ev_procedure(con, project = tab_project, table = tab_table, 
+                                                               visibility = query_vis, variables = tab_vars)
+    
+    
+    
+    me$data <- append(me$data, list(tab_data))
     
   }
   
+  names(me$data) <- meta_tabs$table_id
+  
+  me$metadata$variable <- meta_vars
+  me$metadata$categories <- meta_cats
+  me$metadata$table <- meta_tabs
+  
+  class(me) <- "ev_data"
+  
+  return(me)
 
 }
 
 
+fetch_ev_table <- function(con, project, table, visibility = 0, variables = character(0)) {
+  
+  query_tab <- paste0("data_vis", visibility, ".", project, "__", table)
+  
+  sql <- paste0("select ", sql_make_select(variables),
+                " from ", query_tab)
+  
+  tab_data <- DBI::dbGetQuery(con, sql)
+  
+  if(!is.data.frame(tab_data) | nrow(tab_data) == 0) stop(paste0("Failed to receive valid data from ", query_tab))
+  
+  return(tab_data)
+  
+}
+
+
+fetch_ev_procedure <- function(con, project, table, visibility = 0, variables = character(0)) {
+  
+  query_tab <- paste0("data_vis", visibility, ".", project, "__", table, "__wide")
+  
+  sql <- paste0("exec ", query_tab)
+  
+  tab_data <- DBI::dbGetQuery(con, sql)
+  
+  if(!is.data.frame(tab_data) | nrow(tab_data) == 0) stop(paste0("Failed to receive valid data from ", query_tab))
+  
+  if(length(variables) > 0) tab_data <- tab_data |> dplyr::select(all_of(variables))
+  
+  return(tab_data)
+  
+}
 
