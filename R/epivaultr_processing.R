@@ -200,9 +200,6 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
   meta_tabs <- fetch_ev_meta_tabs(con, ev_vars)
   meta_cats <- fetch_ev_meta_vars(con, ev_vars, visibility, cats = TRUE)
   
-  # what visibility level do we need to query to get all variables we can see
-  query_vis <- max(meta_vars$visibility)
-  
   for(t in 1:nrow(meta_tabs)) {
     
     ev_message("Fetching data from ", meta_tabs$table_id[t])
@@ -214,15 +211,17 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
     tab_table <- meta_tabs$table_name[t]
     tab_nvars <- meta_tabs$n_variables[t]
     
-    type_col <- paste0("sql_type_vis", query_vis)
-    
-    sql_type <- dplyr::select(meta_tabs, !!!type_col)[t, 1]
-    
     tab_cats <- meta_cats |> dplyr::filter(table_id == tab_table_id)
     
     tab_vars <- meta_vars |> dplyr::filter(table_id == tab_table_id)
     
     tab_var_filter <- tab_vars |> dplyr::pull(variable)
+    
+    # what visibility level do we need to query to get all variables we can see
+    query_vis <- max(tab_vars$visibility)
+    
+    type_col <- paste0("sql_type_vis", query_vis)
+    sql_type <- dplyr::select(meta_tabs, !!!type_col)[t, 1]
     
     # do we need to filter?
     if(length(tab_var_filter) == tab_nvars) tab_var_filter <- character(0)
