@@ -113,10 +113,8 @@ fetch_ev_meta_vars <- function(con, ev_vars) {
     # simple search to start with
     vars_found <- intersect(vars_t, vars_search)
     
-    vars_not_found <- setdiff(vars_search, vars_t)
-    
     # check any that might have wildcards
-    for(v in vars_not_found) {
+    for(v in grep(pattern = "\\*|\\?", x = vars_search, value = TRUE)) {
       
       vf <- grep(pattern = glob2rx(v),
                  x = vars_t,
@@ -128,6 +126,12 @@ fetch_ev_meta_vars <- function(con, ev_vars) {
     
     vars_found <- c(vars_t_required, vars_found) |> unique()
     
+    vars_not_found <- grep(pattern = "\\*|\\?", x = vars_search, value = TRUE, invert = TRUE) |>
+      setdiff(vars_found)
+    
+    if(length(vars_not_found) > 0) warning(paste0(length(vars_not_found), " variable(s) not found in `", tab_table_id, "`: ",
+                                                  paste0("`", vars_not_found, "`", collapse = ", ")))
+      
     var_meta_t <- var_meta_t |> dplyr::filter(variable %in% vars_found) |>
       dplyr::mutate(varfullname = paste0(tab_table_id, ".", variable),
                     table_id = tab_table_id,
