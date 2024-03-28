@@ -33,16 +33,16 @@ get_ev_tables.ev_variables <- function(ev_vars) {
 
 
 
-get_ev_vars_requested <- function(x, ...) {
+get_ev_variables <- function(x, ...) {
   
-  UseMethod("get_ev_vars_requested", x)
+  UseMethod("get_ev_variables", x)
   
 }
 
 
-get_ev_vars_requested.ev_variables <- function(ev_vars) {
+get_ev_variables.ev_variables <- function(ev_vars) {
   
-  vars <- ev_vars$vars_requested$variables
+  vars <- ev_vars$variables
   
   return(vars)
   
@@ -81,6 +81,22 @@ get_ev_data.ev_data <- function(ev_data, df_name = character(0), df_index = inte
   if(length(df_index) == 1) dat <- ev_data$data[[df_index]]
   
   return(dat)
+  
+}
+
+
+get_ev_data_names <- function(x, ...) {
+  
+  UseMethod("get_ev_data_names", x)
+  
+}
+
+
+get_ev_data_names.ev_data <- function(ev_data) {
+  
+  data_names <- names(ev_data$data)
+  
+  return(data_names)
   
 }
 

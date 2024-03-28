@@ -32,4 +32,10 @@ cats3 <- fetch_ev_meta_vars(con, v2, visibility = 9, cats = TRUE)
 dat1 <- fetch_ev_data(con, v2)
 dat2 <- fetch_ev_data(con, v2, visibility = 9)
 
+write_ev_data(dat2, 
+              path = "H:/MyDocuments/R/dev",
+              name = "ev_data_test",
+              format = "stata",
+              metadata = TRUE)
+
 ev_disconnect(con)

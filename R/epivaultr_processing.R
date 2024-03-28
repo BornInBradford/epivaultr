@@ -32,7 +32,7 @@ read_ev_variables <- function(file) {
   projects <- unique(vars_df$project)
   tables <- unique(vars_df$proj_table)
   
-  me <- list(vars_requested = vars,
+  me <- list(variables = vars,
              projects = projects,
              tables = tables,
              vars_df = vars_df)
@@ -292,7 +292,7 @@ label_ev_variables <- function(df, vars_df, cats_df) {
     for(vlab in 1:nrow(cats_df)) {
       
       new_vlab <- cats_df$value[vlab]
-      names(new_vlab) <- cats_df$label[vlab]
+      names(new_vlab) <- ifelse(is.na(cats_df$label[vlab]), "", cats_df$label[vlab])
       
       df <- df |> labelled::add_value_labels(!!cats_df$variable[vlab] := new_vlab)
       
@@ -301,7 +301,7 @@ label_ev_variables <- function(df, vars_df, cats_df) {
   
   if(nrow(vars_df) > 0) {
     
-    new_labs <- vars_df$label
+    new_labs <- ifelse(is.na(vars_df$label), "", vars_df$label)
     names(new_labs) <- vars_df$variable
     
     df <- df |> labelled::set_variable_labels(.labels = new_labs)
@@ -334,3 +334,100 @@ set_ev_val_types <- function(df, vars_df) {
   
 }
 
+
+write_ev_data <- function(ev_data, 
+                          path,
+                          name = "ev_data",
+                          format = "stata",
+                          metadata = FALSE) {
+  
+  data_names <- get_ev_data_names(ev_data)
+  
+  for(d in 1:length(data_names)) {
+    
+    ev_message("Writing ", data_names[d])
+    
+    if(format == "stata") {
+      
+      filename <- file.path(path, paste0(name, "_", data_names[d], ".dta"))
+      
+      haven::write_dta(data = get_ev_data(ev_data, df_index = d),
+                       path = filename)
+      
+    }
+    
+    if(format == "csv") {
+      
+      filename <- file.path(path, paste0(name, "_", data_names[d], ".csv"))
+      
+      readr::write_csv(x = get_ev_data(ev_data, df_index = d),
+                       file = filename,
+                       na = "")
+      
+    }
+    
+  }
+  
+  var_search <- ev_data$request |> get_ev_variables()
+  
+  if(length(var_search) > 0) {
+    
+    filename <- file.path(path, paste0(name, "_variable_search.csv"))
+    
+    vars <- data.frame(variable = var_search)
+    
+    readr::write_csv(x = vars,
+                     file = filename,
+                     na = "")
+    
+    
+  }
+  
+  if(metadata) {
+  
+    ev_message("Writing metadata files")
+    
+    if(format == "stata") {
+      
+      filename <- file.path(path, paste0(name, "_variable_metadata.dta"))
+      
+      haven::write_dta(data = get_ev_metadata(ev_data, type = "variable"),
+                       path = filename)
+      
+      filename <- file.path(path, paste0(name, "_category_metadata.dta"))
+      
+      haven::write_dta(data = get_ev_metadata(ev_data, type = "category"),
+                       path = filename)
+      
+      filename <- file.path(path, paste0(name, "_table_metadata.dta"))
+      
+      haven::write_dta(data = get_ev_metadata(ev_data, type = "table"),
+                       path = filename)
+      
+    }
+    
+    if(format == "csv") {
+      
+      filename <- file.path(path, paste0(name, "_variable_metadata.csv"))
+      
+      readr::write_csv(x = get_ev_metadata(ev_data, type = "variable"),
+                       file = filename,
+                       na = "")
+      
+      filename <- file.path(path, paste0(name, "_category_metadata.csv"))
+      
+      readr::write_csv(x = get_ev_metadata(ev_data, type = "category"),
+                       file = filename,
+                       na = "")
+      
+      filename <- file.path(path, paste0(name, "_table_metadata.csv"))
+      
+      readr::write_csv(x = get_ev_metadata(ev_data, type = "table"),
+                       file = filename,
+                       na = "")
+      
+    }
+    
+  }
+  
+}
