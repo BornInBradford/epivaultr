@@ -43,3 +43,13 @@ ev_var_headers <- function() {
   return(var_headers)
   
 }
+
+
+ev_db_columns <- function() {
+  
+  db_cols <- c("ev_row_index")
+  
+  return(db_cols)
+  
+}
+

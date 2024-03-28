@@ -161,6 +161,8 @@ fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
     
   }
   
+  var_meta <- var_meta |> dplyr::select(-any_of(ev_db_columns()))
+  
   return(var_meta)
   
   
@@ -182,6 +184,8 @@ fetch_ev_meta_tabs <- function(con, ev_vars) {
   tab_meta <- DBI::dbGetQuery(con, sql)
   
   if(!is.data.frame(tab_meta) | nrow(tab_meta) == 0) stop(paste0("Cannot find valid table metadata"))
+  
+  tab_meta <- tab_meta |> dplyr::select(-any_of(ev_db_columns()))
   
   return(tab_meta)
   

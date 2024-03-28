@@ -38,4 +38,10 @@ write_ev_data(dat2,
               format = "stata",
               metadata = TRUE)
 
+write_ev_data(dat2, 
+              path = "H:/MyDocuments/R/dev",
+              name = "ev_data_test",
+              format = "csv",
+              metadata = TRUE)
+
 ev_disconnect(con)
