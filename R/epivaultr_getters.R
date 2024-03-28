@@ -63,3 +63,48 @@ get_ev_vars_df.ev_variables <- function(ev_vars) {
   return(vars_df)
   
 }
+
+
+get_ev_data <- function(x, ...) {
+  
+  UseMethod("get_ev_data", x)
+  
+}
+
+
+get_ev_data.ev_data <- function(ev_data, df_name = character(0), df_index = integer(0)) {
+  
+  dat <- data.frame()
+  
+  if(length(df_name) == 1) dat <- ev_data$data[[df_name]]
+  
+  if(length(df_index) == 1) dat <- ev_data$data[[df_index]]
+  
+  return(dat)
+  
+}
+
+
+get_ev_metadata <- function(x, ...) {
+  
+  UseMethod("get_ev_metadata", x)
+  
+}
+
+
+get_ev_metadata.ev_data <- function(ev_data, type = character(0)) {
+  
+  dat <- data.frame()
+  
+  if(!type %in% c("variable", "category", "table")) warning(paste0("Metadata type not recognised: ", type))
+  
+  if(type == "variable") dat <- ev_data$metadata$variable
+  
+  if(type == "category") dat <- ev_data$metadata$category
+  
+  if(type == "table") dat <- ev_data$metadata$table
+  
+  return(dat)
+  
+}
+

@@ -243,7 +243,7 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
   names(me$data) <- meta_tabs$table_id
   
   me$metadata$variable <- meta_vars
-  me$metadata$categories <- meta_cats
+  me$metadata$category <- meta_cats
   me$metadata$table <- meta_tabs
   
   class(me) <- "ev_data"
