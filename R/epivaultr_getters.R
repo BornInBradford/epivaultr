@@ -1,4 +1,5 @@
 
+#' @export
 get_ev_projects <- function(x, ...) {
   
   UseMethod("get_ev_projects", x)
@@ -6,6 +7,7 @@ get_ev_projects <- function(x, ...) {
 }
 
 
+#' @export
 get_ev_projects.ev_variables <- function(ev_vars) {
   
   projects <- ev_vars$projects
@@ -15,7 +17,7 @@ get_ev_projects.ev_variables <- function(ev_vars) {
 }
 
 
-
+#' @export
 get_ev_tables <- function(x, ...) {
   
   UseMethod("get_ev_tables", x)
@@ -23,6 +25,7 @@ get_ev_tables <- function(x, ...) {
 }
 
 
+#' @export
 get_ev_tables.ev_variables <- function(ev_vars) {
   
   tables <- ev_vars$tables
@@ -32,7 +35,7 @@ get_ev_tables.ev_variables <- function(ev_vars) {
 }
 
 
-
+#' @export
 get_ev_variables <- function(x, ...) {
   
   UseMethod("get_ev_variables", x)
@@ -40,6 +43,7 @@ get_ev_variables <- function(x, ...) {
 }
 
 
+#' @export
 get_ev_variables.ev_variables <- function(ev_vars) {
   
   vars <- ev_vars$variables
@@ -49,6 +53,7 @@ get_ev_variables.ev_variables <- function(ev_vars) {
 }
 
 
+#' @export
 get_ev_vars_df <- function(x, ...) {
   
   UseMethod("get_ev_vars_df", x)
@@ -56,6 +61,7 @@ get_ev_vars_df <- function(x, ...) {
 }
 
 
+#' @export
 get_ev_vars_df.ev_variables <- function(ev_vars) {
   
   vars_df <- ev_vars$vars_df
@@ -65,6 +71,7 @@ get_ev_vars_df.ev_variables <- function(ev_vars) {
 }
 
 
+#' @export
 get_ev_data <- function(x, ...) {
   
   UseMethod("get_ev_data", x)
@@ -72,6 +79,7 @@ get_ev_data <- function(x, ...) {
 }
 
 
+#' @export
 get_ev_data.ev_data <- function(ev_data, df_name = character(0), df_index = integer(0)) {
   
   dat <- data.frame()
@@ -92,6 +100,7 @@ get_ev_data_names <- function(x, ...) {
 }
 
 
+#' @export
 get_ev_data_names.ev_data <- function(ev_data) {
   
   data_names <- names(ev_data$data)
@@ -101,6 +110,7 @@ get_ev_data_names.ev_data <- function(ev_data) {
 }
 
 
+#' @export
 get_ev_metadata <- function(x, ...) {
   
   UseMethod("get_ev_metadata", x)
@@ -108,6 +118,7 @@ get_ev_metadata <- function(x, ...) {
 }
 
 
+#' @export
 get_ev_metadata.ev_data <- function(ev_data, type = character(0)) {
   
   dat <- data.frame()

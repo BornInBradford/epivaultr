@@ -1,4 +1,5 @@
 
+#' @export
 make_ev_variables <- function(vars) {
   
   vars_df <- data.frame(varfullname = vars)
@@ -19,7 +20,8 @@ make_ev_variables <- function(vars) {
   
 }
 
-
+#' @export
+#' @importFrom utils read.table
 read_ev_variables <- function(file) {
   
   vars <- character(0)
@@ -87,6 +89,7 @@ sql_make_filter <- function(vals) {
 }
 
 
+#' @export
 fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
@@ -128,7 +131,7 @@ fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
     # check any that might have wildcards
     for(v in grep(pattern = "\\*|\\?", x = vars_search, value = TRUE)) {
       
-      vf <- grep(pattern = glob2rx(v),
+      vf <- grep(pattern = utils::glob2rx(v),
                  x = vars_t,
                  value = TRUE)
       
@@ -170,7 +173,7 @@ fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
     
   }
   
-  var_meta <- var_meta |> dplyr::select(-any_of(ev_db_columns()))
+  var_meta <- var_meta |> dplyr::select(-dplyr::any_of(ev_db_columns()))
   
   return(var_meta)
   
@@ -178,6 +181,7 @@ fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
 }
 
 
+#' @export
 fetch_ev_meta_tabs <- function(con, ev_vars) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
@@ -194,13 +198,14 @@ fetch_ev_meta_tabs <- function(con, ev_vars) {
   
   if(!is.data.frame(tab_meta) | nrow(tab_meta) == 0) stop(paste0("Cannot find valid table metadata"))
   
-  tab_meta <- tab_meta |> dplyr::select(-any_of(ev_db_columns()))
+  tab_meta <- tab_meta |> dplyr::select(-dplyr::any_of(ev_db_columns()))
   
   return(tab_meta)
   
 }
 
 
+#' @export
 fetch_ev_data <- function(con, ev_vars, visibility = 0) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
@@ -277,7 +282,7 @@ fetch_ev_table <- function(con, project, table, visibility = 0, variables = char
   
   if(!is.data.frame(tab_data) | nrow(tab_data) == 0) stop(paste0("Failed to receive valid data from ", query_tab))
   
-  tab_data <- tab_data |> dplyr::select(-any_of(ev_db_columns()))
+  tab_data <- tab_data |> dplyr::select(-dplyr::any_of(ev_db_columns()))
     
   return(tab_data)
   
@@ -294,13 +299,14 @@ fetch_ev_procedure <- function(con, project, table, visibility = 0, variables = 
   
   if(!is.data.frame(tab_data) | nrow(tab_data) == 0) stop(paste0("Failed to receive valid data from ", query_tab))
   
-  if(length(variables) > 0) tab_data <- tab_data |> dplyr::select(all_of(variables))
+  if(length(variables) > 0) tab_data <- tab_data |> dplyr::select(dplyr::all_of(variables))
   
   return(tab_data)
   
 }
 
 
+#' @export
 ev_simple_fetch <- function(con, project, table, visibility = 0, variables = character(0)) {
   
   if(is.null(variables) | any(is.na(variables)) | length(variables) == 0) variables <- "*"
@@ -320,6 +326,7 @@ ev_simple_fetch <- function(con, project, table, visibility = 0, variables = cha
 }
 
 
+#' @importFrom rlang :=
 label_ev_variables <- function(df, vars_df, cats_df) {
   
   if(nrow(cats_df) > 0) {
@@ -369,6 +376,7 @@ set_ev_val_types <- function(df, vars_df) {
 }
 
 
+#' @export
 write_ev_data <- function(ev_data, 
                           path,
                           name = "ev_data",

@@ -1,6 +1,8 @@
-source("R/epivaultr_tools.R")
-source("R/epivaultr_getters.R")
-source("R/epivaultr_processing.R")
+#source("R/epivaultr_tools.R")
+#source("R/epivaultr_getters.R")
+#source("R/epivaultr_processing.R")
+
+library(epivaultr)
 
 v1 <- read_ev_variables("tests/example_inputs/variables.csv")
 

@@ -1,0 +1,22 @@
+Package: epivaultr
+Title: Extract EpiVault data
+Version: 0.1
+Authors@R: 
+    person(given = "Dan", family = "Mason", email = "dan.mason@bthft.nhs.uk", role = c("aut", "cre"))
+Description: Tools and functions for extracting data from EpiVault, the Born in Bradford research data warehouse.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.0
+Imports: 
+    DBI,
+    dplyr,
+    haven,
+    labelled,
+    odbc,
+    readr,
+    readxl,
+    rlang,
+    tidyr,
+    utils,
+    vroom
