@@ -20,6 +20,17 @@ options(ev_database = "ResearchWarehouse")
 
 con <- ev_connect()
 
+simple1 <- ev_simple_fetch(con, "BiB_CohortInfo", "person_info")
+simple2 <- ev_simple_fetch(con, "BiB_CohortInfo", "person_info", visibility = 9)
+
+simple3 <- ev_simple_fetch(con, "BiB_CohortInfo", "person_info", variables = c("BiBPersonID", "ParticipantType", "DateOfBirth", "PregnancyID"))
+simple4 <- ev_simple_fetch(con, "BiB_CohortInfo", "person_info", visibility = 9,
+                           variables = c("BiBPersonID", "ParticipantType", "DateOfBirth"))
+simple5 <- ev_simple_fetch(con, "BiBBS_Baseline", "pregnancy_survey", variables = c("adm_medqage", "mes1*"))
+
+simple6 <- ev_simple_fetch(con, "BiB_Metabolomics", "metms_pairm_r")
+simple7 <- ev_simple_fetch(con, "BiB_Metabolomics", "metms_pairm_r", variables = c("BiBPersonID", "BiBPregNumber", "metmsr42370", "metmsr531"))
+
 tabs1 <- fetch_ev_meta_tabs(con, v2)
 vars1 <- fetch_ev_meta_vars(con, v1)
 

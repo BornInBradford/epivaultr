@@ -1,4 +1,25 @@
 
+make_ev_variables <- function(vars) {
+  
+  vars_df <- data.frame(varfullname = vars)
+  vars_df <- tidyr::separate(vars_df, varfullname, c("project", "table", "variable"), sep = "\\.")
+  vars_df <- dplyr::mutate(vars_df, proj_table = paste(project, table, sep = "."))
+  
+  projects <- unique(vars_df$project)
+  tables <- unique(vars_df$proj_table)
+  
+  me <- list(variables = vars,
+             projects = projects,
+             tables = tables,
+             vars_df = vars_df)
+  
+  class(me) <- "ev_variables"
+  
+  return(me)
+  
+}
+
+
 read_ev_variables <- function(file) {
   
   vars <- character(0)
@@ -24,22 +45,10 @@ read_ev_variables <- function(file) {
   vars <- vars[!vars %in% ev_var_headers()]
   
   if(length(vars) == 0) stop("Variables not found or format of input file cannot be determined")
-    
-  vars_df <- data.frame(varfullname = vars)
-  vars_df <- tidyr::separate(vars_df, varfullname, c("project", "table", "variable"), sep = "\\.")
-  vars_df <- dplyr::mutate(vars_df, proj_table = paste(project, table, sep = "."))
   
-  projects <- unique(vars_df$project)
-  tables <- unique(vars_df$proj_table)
+  vars <- make_ev_variables(vars)
   
-  me <- list(variables = vars,
-             projects = projects,
-             tables = tables,
-             vars_df = vars_df)
-  
-  class(me) <- "ev_variables"
-  
-  return(me)
+  return(vars)
   
 }
 
@@ -268,6 +277,8 @@ fetch_ev_table <- function(con, project, table, visibility = 0, variables = char
   
   if(!is.data.frame(tab_data) | nrow(tab_data) == 0) stop(paste0("Failed to receive valid data from ", query_tab))
   
+  tab_data <- tab_data |> dplyr::select(-any_of(ev_db_columns()))
+    
   return(tab_data)
   
 }
@@ -286,6 +297,25 @@ fetch_ev_procedure <- function(con, project, table, visibility = 0, variables = 
   if(length(variables) > 0) tab_data <- tab_data |> dplyr::select(all_of(variables))
   
   return(tab_data)
+  
+}
+
+
+ev_simple_fetch <- function(con, project, table, visibility = 0, variables = character(0)) {
+  
+  if(is.null(variables) | any(is.na(variables)) | length(variables) == 0) variables <- "*"
+  
+  variables <- variables[!is.na(variables)]
+  
+  vars <- paste0(project, ".", table, ".", variables)
+  
+  vars <- make_ev_variables(vars)
+  
+  dat <- fetch_ev_data(con, vars, visibility)
+  
+  dat <- get_ev_data(dat, df_index = 1)
+  
+  return(dat)
   
 }
 
