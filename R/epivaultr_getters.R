@@ -1,4 +1,22 @@
 
+#' Get project names
+#' 
+#' Returns project names from an `ev_variables` container. An `ev_variables` container can be created using `read_ev_variables`.
+#'
+#' @param ev_vars An `ev_variables` container
+#'
+#' @return A character vector of project names
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' vars <- read_ev_variables("path-to-variables-file")
+#' 
+#' get_ev_projects(vars)
+#' 
+#' }
+#' 
 get_ev_projects <- function(ev_vars) {
   
   if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
