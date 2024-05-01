@@ -1,14 +1,7 @@
 
-#' @export
-get_ev_projects <- function(x, ...) {
+get_ev_projects <- function(ev_vars) {
   
-  UseMethod("get_ev_projects", x)
-  
-}
-
-
-#' @export
-get_ev_projects.ev_variables <- function(ev_vars) {
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
   projects <- ev_vars$projects
   
@@ -17,34 +10,21 @@ get_ev_projects.ev_variables <- function(ev_vars) {
 }
 
 
-#' @export
-get_ev_tables <- function(x, ...) {
+get_ev_tables <- function(ev_vars) {
   
-  UseMethod("get_ev_tables", x)
-  
-}
-
-
-#' @export
-get_ev_tables.ev_variables <- function(ev_vars) {
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
   tables <- ev_vars$tables
   
   return(tables)
   
-}
-
-
-#' @export
-get_ev_variables <- function(x, ...) {
-  
-  UseMethod("get_ev_variables", x)
   
 }
 
 
-#' @export
-get_ev_variables.ev_variables <- function(ev_vars) {
+get_ev_variables <- function(ev_vars) {
+  
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
   vars <- ev_vars$variables
   
@@ -53,16 +33,9 @@ get_ev_variables.ev_variables <- function(ev_vars) {
 }
 
 
-#' @export
-get_ev_vars_df <- function(x, ...) {
+get_ev_vars_df <- function(ev_vars) {
   
-  UseMethod("get_ev_vars_df", x)
-  
-}
-
-
-#' @export
-get_ev_vars_df.ev_variables <- function(ev_vars) {
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
   
   vars_df <- ev_vars$vars_df
   
@@ -71,16 +44,9 @@ get_ev_vars_df.ev_variables <- function(ev_vars) {
 }
 
 
-#' @export
-get_ev_data <- function(x, ...) {
+get_ev_data <- function(ev_data, df_name = character(0), df_index = integer(0)) {
   
-  UseMethod("get_ev_data", x)
-  
-}
-
-
-#' @export
-get_ev_data.ev_data <- function(ev_data, df_name = character(0), df_index = integer(0)) {
+  if(class(ev_data) != "ev_data") stop("`ev_data` must be of class `ev_data` e.g. created using the `fetch_ev_data` function")
   
   dat <- data.frame()
   
@@ -93,15 +59,9 @@ get_ev_data.ev_data <- function(ev_data, df_name = character(0), df_index = inte
 }
 
 
-get_ev_data_names <- function(x, ...) {
+get_ev_data_names <- function(ev_data) {
   
-  UseMethod("get_ev_data_names", x)
-  
-}
-
-
-#' @export
-get_ev_data_names.ev_data <- function(ev_data) {
+  if(class(ev_data) != "ev_data") stop("`ev_data` must be of class `ev_data` e.g. created using the `fetch_ev_data` function")
   
   data_names <- names(ev_data$data)
   
@@ -110,16 +70,9 @@ get_ev_data_names.ev_data <- function(ev_data) {
 }
 
 
-#' @export
-get_ev_metadata <- function(x, ...) {
+get_ev_metadata <- function(ev_data, type = character(0)) {
   
-  UseMethod("get_ev_metadata", x)
-  
-}
-
-
-#' @export
-get_ev_metadata.ev_data <- function(ev_data, type = character(0)) {
+  if(class(ev_data) != "ev_data") stop("`ev_data` must be of class `ev_data` e.g. created using the `fetch_ev_data` function")
   
   dat <- data.frame()
   
