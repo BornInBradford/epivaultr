@@ -7,10 +7,10 @@
 ev_disconnect(con)
 }
 \arguments{
-\item{con}{EpiVault connection}
+\item{con}{An EpiVault connection object}
 }
 \description{
-Disconnects from EpiVault instance identified by `con`
+Disconnects from EpiVault instance identified by \code{con}
 }
 \examples{
 \dontrun{
@@ -21,3 +21,8 @@ ev_disconnect(con)
 
 }
 }
+\seealso{
+Other {EpiVault connectors}: 
+\code{\link{ev_connect}()}
+}
+\concept{{EpiVault connectors}}
