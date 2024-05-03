@@ -1,0 +1,29 @@
+---
+title: "Getting started with epivaultr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with epivaultr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+[epivaultr] is an [R] package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
+
+In this guide we will install [epivaultr], connect to EpiVault, and do a quick extract of a couple of variables from a single table.
+
+## Installation
+
+[epivaultr](https://github.com/BornInBradford/epivaultr) can be installed from GitHub using the [devtools] package:
+
+```{r eval=FALSE}
+devtools::install_github("BornInBradford/epivaultr")
+```
+
+

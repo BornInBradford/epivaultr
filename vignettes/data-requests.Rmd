@@ -1,0 +1,28 @@
+---
+title: "Data requests with epivaultr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data requests with epivaultr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+[epivaultr] is an [R] package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
+
+In this guide we will run a complete data request. This involves the following steps:
+
+1. Read the requested variables
+2. Connect to EpiVault
+3. Fetch the requested data from EpiVault
+4. Disconnect from EpiVault
+5. Write the output data files
+
+## [1] Read the requested variables
+

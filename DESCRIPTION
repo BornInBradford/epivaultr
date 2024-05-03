@@ -20,3 +20,6 @@ Imports:
     tidyr,
     utils,
     vroom
+Suggests: 
+    knitr
+VignetteBuilder: knitr
