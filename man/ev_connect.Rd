@@ -15,7 +15,7 @@ ev_connect(
 
 \item{ev_database}{Name of EpiVault database}
 
-\item{ev_driver}{Name of SQL Server drive (default: "SQL Server")}
+\item{ev_driver}{(default="SQL Server") Name of SQL Server driver}
 }
 \value{
 An EpiVault connection object

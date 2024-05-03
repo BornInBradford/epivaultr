@@ -22,7 +22,7 @@ An \code{ev_variables} container can be created using \code{\link{read_ev_variab
 \dontrun{
 
 # read a variable data request file
-vars <- read_ev_variables("path-to-variables-file")
+vars <- read_ev_variables("path/to/variables/file")
 
 # get the table names from the request
 get_ev_tables(vars)

@@ -22,7 +22,7 @@ Three types of metadata can be returned:
 
 \describe{
   \item{\emph{variable}}{Variable level information such as name, label, description, keywords and summary stats.}
-  \item{\emph{category}}{Value labels for categorical variabbles, one row per value. Returns variable name, value and label.}
+  \item{\emph{category}}{Value labels for categorical variables, one row per value. Returns variable name, value and label.}
   \item{\emph{table}}{Table level information such as name, cohort membership, entity type, subjects and respondents and table description.}
 }
 
@@ -31,10 +31,12 @@ An \code{ev_data} container can be created using \code{\link{fetch_ev_data}}.
 \examples{
 \dontrun{
 
+con <- ev_connect()
+
 # read a variable data request file
-vars <- read_ev_variables("path-to-variables-file")
+vars <- read_ev_variables("path/to/variables/file")
 # fetch the data from EpiVault
-dat <- fetch_ev_data(vars)
+dat <- fetch_ev_data(con, vars)
 
 # get variable metadata
 get_ev_metadata(dat, type = "variable")

@@ -17,7 +17,7 @@
 #' \dontrun{
 #' 
 #' # read a variable data request file
-#' vars <- read_ev_variables("path-to-variables-file")
+#' vars <- read_ev_variables("path/to/variables/file")
 #' 
 #' # get the project names from the request
 #' get_ev_projects(vars)
@@ -26,7 +26,7 @@
 #' 
 get_ev_projects <- function(ev_vars) {
   
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be an `ev_variables` container e.g. created using the `read_ev_variables` function")
   
   projects <- ev_vars$projects
   
@@ -53,7 +53,7 @@ get_ev_projects <- function(ev_vars) {
 #' \dontrun{
 #' 
 #' # read a variable data request file
-#' vars <- read_ev_variables("path-to-variables-file")
+#' vars <- read_ev_variables("path/to/variables/file")
 #' 
 #' # get the table names from the request
 #' get_ev_tables(vars)
@@ -62,7 +62,7 @@ get_ev_projects <- function(ev_vars) {
 #'
 get_ev_tables <- function(ev_vars) {
   
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be an `ev_variables` container e.g. created using the `read_ev_variables` function")
   
   tables <- ev_vars$tables
   
@@ -90,7 +90,7 @@ get_ev_tables <- function(ev_vars) {
 #' \dontrun{
 #' 
 #' # read a variable data request file
-#' vars <- read_ev_variables("path-to-variables-file")
+#' vars <- read_ev_variables("path/to/variables/file")
 #' 
 #' # get the variable names from the request
 #' get_ev_variables(vars)
@@ -99,7 +99,7 @@ get_ev_tables <- function(ev_vars) {
 #'
 get_ev_variables <- function(ev_vars) {
   
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be an `ev_variables` container e.g. created using the `read_ev_variables` function")
   
   vars <- ev_vars$variables
   
@@ -135,7 +135,7 @@ get_ev_variables <- function(ev_vars) {
 #' \dontrun{
 #' 
 #' # read a variable data request file
-#' vars <- read_ev_variables("path-to-variables-file")
+#' vars <- read_ev_variables("path/to/variables/file")
 #' 
 #' # get the variable data frame from the request
 #' get_ev_vars_df(vars)
@@ -144,7 +144,7 @@ get_ev_variables <- function(ev_vars) {
 #'
 get_ev_vars_df <- function(ev_vars) {
   
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be an `ev_variables` container e.g. created using the `read_ev_variables` function")
   
   vars_df <- ev_vars$vars_df
   
@@ -174,10 +174,12 @@ get_ev_vars_df <- function(ev_vars) {
 #' @examples
 #' \dontrun{
 #' 
+#' con <- ev_connect()
+#' 
 #' # read a variable data request file
-#' vars <- read_ev_variables("path-to-variables-file")
+#' vars <- read_ev_variables("path/to/variables/file")
 #' # fetch the data from EpiVault
-#' dat <- fetch_ev_data(vars)
+#' dat <- fetch_ev_data(con, vars)
 #' 
 #' # get a data frame by name
 #' get_ev_data(dat, df_name = "proj1.tab1")
@@ -188,7 +190,7 @@ get_ev_vars_df <- function(ev_vars) {
 #'
 get_ev_data <- function(ev_data, df_name = character(0), df_index = integer(0)) {
   
-  if(class(ev_data) != "ev_data") stop("`ev_data` must be of class `ev_data` e.g. created using the `fetch_ev_data` function")
+  if(class(ev_data) != "ev_data") stop("`ev_data` must be an `ev_data` container e.g. created using the `fetch_ev_data` function")
   
   dat <- data.frame()
   
@@ -220,10 +222,12 @@ get_ev_data <- function(ev_data, df_name = character(0), df_index = integer(0)) 
 #' @examples
 #' \dontrun{
 #' 
+#' con <- ev_connect()
+#' 
 #' # read a variable data request file
-#' vars <- read_ev_variables("path-to-variables-file")
+#' vars <- read_ev_variables("path/to/variables/file")
 #' # fetch the data from EpiVault
-#' dat <- fetch_ev_data(vars)
+#' dat <- fetch_ev_data(con, vars)
 #' 
 #' # get the data frame names
 #' get_ev_data_names(dat)
@@ -232,7 +236,7 @@ get_ev_data <- function(ev_data, df_name = character(0), df_index = integer(0)) 
 #'
 get_ev_data_names <- function(ev_data) {
   
-  if(class(ev_data) != "ev_data") stop("`ev_data` must be of class `ev_data` e.g. created using the `fetch_ev_data` function")
+  if(class(ev_data) != "ev_data") stop("`ev_data` must be an `ev_data` container e.g. created using the `fetch_ev_data` function")
   
   data_names <- names(ev_data$data)
   
@@ -249,7 +253,7 @@ get_ev_data_names <- function(ev_data) {
 #' 
 #' \describe{
 #'   \item{\emph{variable}}{Variable level information such as name, label, description, keywords and summary stats.}
-#'   \item{\emph{category}}{Value labels for categorical variabbles, one row per value. Returns variable name, value and label.}
+#'   \item{\emph{category}}{Value labels for categorical variables, one row per value. Returns variable name, value and label.}
 #'   \item{\emph{table}}{Table level information such as name, cohort membership, entity type, subjects and respondents and table description.}
 #' }
 #' 
@@ -267,10 +271,12 @@ get_ev_data_names <- function(ev_data) {
 #' @examples
 #' \dontrun{
 #' 
+#' con <- ev_connect()
+#' 
 #' # read a variable data request file
-#' vars <- read_ev_variables("path-to-variables-file")
+#' vars <- read_ev_variables("path/to/variables/file")
 #' # fetch the data from EpiVault
-#' dat <- fetch_ev_data(vars)
+#' dat <- fetch_ev_data(con, vars)
 #' 
 #' # get variable metadata
 #' get_ev_metadata(dat, type = "variable")
@@ -283,7 +289,7 @@ get_ev_data_names <- function(ev_data) {
 #'
 get_ev_metadata <- function(ev_data, type = character(0)) {
   
-  if(class(ev_data) != "ev_data") stop("`ev_data` must be of class `ev_data` e.g. created using the `fetch_ev_data` function")
+  if(class(ev_data) != "ev_data") stop("`ev_data` must be an `ev_data` container e.g. created using the `fetch_ev_data` function")
   
   dat <- data.frame()
   

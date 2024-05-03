@@ -23,10 +23,12 @@ An \code{ev_data} container can be created using \code{\link{fetch_ev_data}}.
 \examples{
 \dontrun{
 
+con <- ev_connect()
+
 # read a variable data request file
-vars <- read_ev_variables("path-to-variables-file")
+vars <- read_ev_variables("path/to/variables/file")
 # fetch the data from EpiVault
-dat <- fetch_ev_data(vars)
+dat <- fetch_ev_data(con, vars)
 
 # get the data frame names
 get_ev_data_names(dat)

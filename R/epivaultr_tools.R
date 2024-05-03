@@ -7,7 +7,7 @@
 #'
 #' @param ev_server Name of SQL Server instance
 #' @param ev_database Name of EpiVault database
-#' @param ev_driver Name of SQL Server drive (default: "SQL Server")
+#' @param ev_driver (default="SQL Server") Name of SQL Server driver
 #'
 #' @return An EpiVault connection object
 #' @export
@@ -31,7 +31,7 @@ ev_connect <- function(ev_server = getOption("ev_server"),
                        ev_database = getOption("ev_database"),
                        ev_driver = dplyr::coalesce(getOption("ev_driver"), "SQL Server")) {
   
-  if(!is.character(ev_server) | !is.character(ev_database)) stop("You must specify `ev_server` and `ev_database` using `options(...)`")
+  if(!is.character(ev_server) | !is.character(ev_database)) stop("You must specify `ev_server` and `ev_database` using `options(...)`. Type ?ev_connect to view the help file for more details.")
   
   con <- DBI::dbConnect(odbc::odbc(), driver = ev_driver, server = ev_server, 
                         database = ev_database, Trusted_Connection = "True")

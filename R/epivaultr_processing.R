@@ -1,5 +1,26 @@
 
+#' Make ev_variables container
+#' 
+#' Converts a character vector of fully qualified variable names into an \code{ev_variables} container.
+#' 
+#' This is called by data request functions such as \code{\link{read_ev_variables}} and \code{\link{ev_simple_fetch}} and you would not normally call it directly. However, there may be circumstances in which all you have is a list of variable names and you wish to convert these into an \code{ev_variables} container.
+#'
+#' @param vars Character vector of fully qualified variable names
+#'
+#' @return An \code{ev_variables} container
 #' @export
+#' 
+#' @family {data request functions}
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' vars <- c("proj1.tab1.var1", "proj1.tab1.var2", "proj2.tab2.var1")
+#' make_ev_variables(vars)
+#' 
+#' }
+#' 
+#' @importFrom utils read.table
 make_ev_variables <- function(vars) {
   
   vars_df <- data.frame(varfullname = vars)
@@ -20,7 +41,29 @@ make_ev_variables <- function(vars) {
   
 }
 
+
+#' Read variables from a file
+#' 
+#' Reads variables from a file into an \code{ev_variables} container. Supports delimited or fixed width text and Excel formats. Will try to guess format based on file extension and first few lines.
+#' 
+#' Builds a character vector of fully qualified variable names and passes this to \code{\link{make_ev_variables}}.
+#'
+#' @param file Path to the file to be read
+#'
+#' @return An \code{ev_variables} container
 #' @export
+#' 
+#' @family {data request functions}
+#' @seealso If you want to create an \code{ev_variables} container directly from a vector of variable names, see \code{\link{make_ev_variables}}.
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' # read a variable data request file
+#' vars <- read_ev_variables("path/to/variables/file")
+#' 
+#' }
+#' 
 #' @importFrom utils read.table
 read_ev_variables <- function(file) {
   
@@ -89,10 +132,50 @@ sql_make_filter <- function(vals) {
 }
 
 
+#' Fetch variable metadata from EpiVault
+#' 
+#' Interprets an \code{ev_variables} container, fetches the variable metadata from EpiVault and returns it in a data frame. Can fetch either variable level information or categorical value labels depending on the \code{cats} parameter. See Arguments and Details.
+#' 
+#' If \code{cats=TRUE} then it returns category metadata, otherwise (default) it returns variable metadata:
+#' 
+#' \describe{
+#'   \item{\emph{variable (default)}}{Variable level information such as name, label, description, keywords and summary stats.}
+#'   \item{\emph{category}}{Value labels for categorical variables, one row per value. Returns variable name, value and label.}
+#' }
+#'
+#' @param con An EpiVault connection object
+#' @param ev_vars An \code{ev_variables} container
+#' @param visibility (default=0) Maximum visibility level requested. See examples.
+#' @param cats (default=FALSE) If \code{TRUE}, return categorical value labels, otherwise return variable level metadata
+#' 
+#'
+#' @return A data frame
 #' @export
+#' 
+#' @family {data request functions}
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' con <- ev_connect()
+#' 
+#' # read a variable data request file
+#' vars <- read_ev_variables("path/to/variables/file")
+#'
+#' # fetch variable metadata from EpiVault - default visibility for standard data requests
+#' meta <- fetch_ev_meta_vars(con, vars)
+#' 
+#' # fetch variable metadata from EpiVault - highest visibility to access sensitive variables
+#' meta <- fetch_ev_meta_vars(con, vars, visibility = 9)
+#'
+#' # fetch categorical metadata from EpiVault
+#' meta <- fetch_ev_meta_vars(con, vars, cats = TRUE)
+#'
+#' }
+#' 
 fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
   
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be an `ev_variables` container e.g. created using the `read_ev_variables` function")
   
   tables <- get_ev_tables(ev_vars)
   vars_df <- get_ev_vars_df(ev_vars)
@@ -181,10 +264,34 @@ fetch_ev_meta_vars <- function(con, ev_vars, visibility = 0, cats = FALSE) {
 }
 
 
+#' Fetch table metadata from EpiVault
+#' 
+#' Interprets an \code{ev_variables} container, fetches the table metadata from EpiVault and returns it in a data frame.
+#'
+#' @param con An EpiVault connection object
+#' @param ev_vars An \code{ev_variables} container
+#' 
+#' @return A data frame
 #' @export
+#' 
+#' @family {data request functions}
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' con <- ev_connect()
+#' 
+#' # read a variable data request file
+#' vars <- read_ev_variables("path/to/variables/file")
+#'
+#' # fetch table metadata from EpiVault
+#' meta <- fetch_ev_meta_tabs(con, vars)
+#' 
+#' }
+#' 
 fetch_ev_meta_tabs <- function(con, ev_vars) {
   
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be an `ev_variables` container e.g. created using the `read_ev_variables` function")
   
   tables <- get_ev_tables(ev_vars)
   
@@ -205,10 +312,41 @@ fetch_ev_meta_tabs <- function(con, ev_vars) {
 }
 
 
+#' Fetch data request from EpiVault
+#' 
+#' Interprets an \code{ev_variables} container, fetches the data from EpiVault and returns it in an \code{ev_data} container.
+#' 
+#' Passes \code{ev_vars} to \code{\link{fetch_ev_meta_vars}} and \code{\link{fetch_ev_meta_tabs}} to get the metadata ready for processing, fetches the tabular data from EpiVault before applying data labels. All fetched data and metadata is returned in an \code{ev_data} container.
+#'
+#' @param con An EpiVault connection object
+#' @param ev_vars An \code{ev_variables} container
+#' @param visibility (default=0) Maximum visibility level requested. See examples.
+#' 
+#'
+#' @return An \code{ev_data} container
 #' @export
+#' 
+#' @family {data request functions}
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' con <- ev_connect()
+#' 
+#' # read a variable data request file
+#' vars <- read_ev_variables("path/to/variables/file")
+#'
+#' # fetch the data from EpiVault - default visibility for standard data requests
+#' ev <- fetch_ev_data(con, vars)
+#' 
+#' # fetch the data from EpiVault - highest visibility to access sensitive variables
+#' ev <- fetch_ev_data(con, vars, visibility = 9)
+#'
+#' }
+#' 
 fetch_ev_data <- function(con, ev_vars, visibility = 0) {
   
-  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be of class `ev_variables` e.g. created using the `read_ev_variables` function")
+  if(class(ev_vars) != "ev_variables") stop("`ev_vars` must be an `ev_variables` container e.g. created using the `read_ev_variables` function")
   
   me <- list(data = list(),
              metadata = list(),
@@ -306,7 +444,53 @@ fetch_ev_procedure <- function(con, project, table, visibility = 0, variables = 
 }
 
 
+#' Simple data fetcher
+#' 
+#' Fetches data from a single table in EpiVault and returns it as a data frame.
+#'
+#' @param con An EpiVault connection object
+#' @param project Project name
+#' @param table Table name
+#' @param visibility (default=0) Maximum visibility level requested. See examples.
+#' @param variables (optional) Character vector of variable names. These should just be the variable (column) names, i.e. not fully qualified. If omitted, all variables are returned.
+#'
+#' @return A data frame containing the data requested
 #' @export
+#' 
+#' @family {data request functions}
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' con <- ev_connect()
+#' 
+#' # fetch the whole table
+#' dat <- ev_simple_fetch(con,
+#'                        project = "project1",
+#'                        table = "table1",
+#'                        visibility = 0
+#' )
+#' 
+#' # just fetch a couple of variables
+#' # NB. variables in the table tagged as 'required' will also be returned
+#' dat <- ev_simple_fetch(con,
+#'                        project = "project1",
+#'                        table = "table1",
+#'                        visibility = 0,
+#'                        variables = c("var11", "var13", "var44")
+#' )
+#' 
+#' # use higher visibility level to access sensitive variables
+#' # special database permissions may be required 
+#' dat <- ev_simple_fetch(con,
+#'                        project = "project1",
+#'                        table = "table1",
+#'                        visibility = 9,
+#'                        variables = c("date_of_birth") 
+#'                        
+#' }
+#' 
+#' @importFrom utils read.table
 ev_simple_fetch <- function(con, project, table, visibility = 0, variables = character(0)) {
   
   if(is.null(variables) | any(is.na(variables)) | length(variables) == 0) variables <- "*"
@@ -376,7 +560,47 @@ set_ev_val_types <- function(df, vars_df) {
 }
 
 
+#' Write data files
+#' 
+#' Writes the data and metadata from an \code{ev_data} container to the specified file format.
+#' 
+#' @param ev_data An \code{ev_data} container
+#' @param path Path to the folder to save files to
+#' @param name (default='ev_data') A name for the data request. Used as the prefix for every output file.
+#' @param format (default='stata') File format to write to. One of \code{c('stata', 'csv')}.
+#' @param metadata (default=FALSE) If \code{TRUE}, also output files for variable, category and table metadata.
+#' 
 #' @export
+#' 
+#' @family {data request functions}
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' con <- ev_connect()
+#' 
+#' # read a variable data request file
+#' vars <- read_ev_variables("path/to/variables/file")
+#'
+#' # fetch the data from EpiVault
+#' ev <- fetch_ev_data(con, vars)
+#' 
+#' # write the data files in default stata format, excluding metadata
+#' write_ev_data(ev_data = ev,
+#'               path = "path/to/data/request/folder",
+#'               name = "request101"
+#' )
+#' 
+#' # write the data files in csv format, including metadata
+#' write_ev_data(ev_data = ev,
+#'               path = "path/to/data/request/folder",
+#'               name = "request101",
+#'               format = 'csv',
+#'               metadata = TRUE
+#' )
+#' 
+#' }
+#' 
 write_ev_data <- function(ev_data, 
                           path,
                           name = "ev_data",
