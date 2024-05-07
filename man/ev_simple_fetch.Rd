@@ -50,7 +50,8 @@ dat <- ev_simple_fetch(con,
                        project = "project1",
                        table = "table1",
                        visibility = 9,
-                       variables = c("date_of_birth") 
+                       variables = c("date_of_birth")
+)
                        
 }
 

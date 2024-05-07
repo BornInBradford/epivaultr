@@ -486,7 +486,8 @@ fetch_ev_procedure <- function(con, project, table, visibility = 0, variables = 
 #'                        project = "project1",
 #'                        table = "table1",
 #'                        visibility = 9,
-#'                        variables = c("date_of_birth") 
+#'                        variables = c("date_of_birth")
+#' )
 #'                        
 #' }
 #' 
