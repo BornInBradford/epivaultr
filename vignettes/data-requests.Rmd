@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-[epivaultr] is an [R] package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
+`epivaultr` is an R package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
 
 In this guide we will run a complete data request. This involves the following steps:
 
@@ -24,5 +24,76 @@ In this guide we will run a complete data request. This involves the following s
 4. Disconnect from EpiVault
 5. Write the output data files
 
-## [1] Read the requested variables
+## 1 Read the requested variables
+
+A data request starts from a list of variables, provided in a `csv` or `xlsx` file in one of a variety of formats **[LINK]**. The first task is to read the variables file into an `ev_variables` **[LINK]** container, which contains all the information `epivaultr` needs to fetch the required data.
+
+In the example we  that will hold all the information about the requested variables.
+
+```{r eval=FALSE}
+
+# create an `ev_variables` container called `vars` from the file `variables.csv`
+vars <- read_ev_variables("tests/example_inputs/variables.csv")
+
+```
+
+## 2 Connect to EpiVault
+
+An EpiVault instance is a SQL Server database. To make a connection you specify the server name and database name of the instance you're connecting to. These can be set once using `options` or can be passed directly to the `ev_connect` function. 
+
+```{r eval=FALSE}
+
+# use `options` to define the connection
+options(ev_server = "BHTS-RESRCH22DV")
+options(ev_database = "ResearchWarehouse")
+
+# the connection token is returned in `con` to be used in data request functions
+con <- ev_connect()
+
+```
+
+## 3 Fetch the requested data
+
+So now we have:
+
+| object | contents |
+|--------|---------------------------------------|
+| `vars` | An `ev_variables` container with the details of the data request |
+| `con`  | An EpiVault connection token |
+
+We're ready to pass these to the next step to fetch the required data. The requested data tables and associated metadata are bundled into an `ev_data` container. 
+
+```{r eval=FALSE}
+
+# create an `ev_data` container called `dat` that will hold all of the data returned
+dat <- fetch_ev_data(con, vars)
+
+```
+
+## 4 Disconnect from EpiVault
+
+Now we no longer need the open connection to EpiVault, it is good practice to disconnect.
+
+```{r eval=FALSE}
+
+ev_disconnect(con)
+
+```
+
+## 5 Write the output data files
+
+The data and metadata tables in `dat` can be accessed using various functions **[LINK??]**. For convenience in processing data requests, the `write_ev_data` function is provided to output all data and metadata files in a chosen file format.
+
+To skip metadata outputs, set `metadata` to `FALSE`.
+
+```{r eval=FALSE}
+
+# output all data and metadata tables in Stata format using the file prefix `my_data`
+write_ev_data(dat, 
+              path = "H:/DataRequests/output",
+              name = "my_data",
+              format = "stata",
+              metadata = TRUE)
+
+```
 
