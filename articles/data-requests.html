@@ -42,6 +42,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/data-requests.html">Data requests with epivaultr</a>
+    <a class="dropdown-item" href="../articles/features-concepts.html">epivaultr features and concepts</a>
     <a class="dropdown-item" href="../articles/getting-started.html">Getting started with epivaultr</a>
   </div>
 </li>
@@ -71,11 +72,11 @@
 
     
     
-<p>[epivaultr] is an [R] package used to extract data from EpiVault, the
-Born in Bradford data warehouse. It can be used for quick grabs of
-specific variables from specific tables. It can also be used to manage
-an entire data request end to end, from reading a user’s requested
-variables, to writing output files ready for shipping.</p>
+<p><code>epivaultr</code> is an R package used to extract data from
+EpiVault, the Born in Bradford data warehouse. It can be used for quick
+grabs of specific variables from specific tables. It can also be used to
+manage an entire data request end to end, from reading a user’s
+requested variables, to writing output files ready for shipping.</p>
 <p>In this guide we will run a complete data request. This involves the
 following steps:</p>
 <ol style="list-style-type: decimal">
@@ -86,10 +87,100 @@ following steps:</p>
 <li>Write the output data files</li>
 </ol>
 <div class="section level2">
-<h2 id="read-the-requested-variables">[1] Read the requested variables<a class="anchor" aria-label="anchor" href="#read-the-requested-variables"></a>
+<h2 id="read-the-requested-variables">1 Read the requested variables<a class="anchor" aria-label="anchor" href="#read-the-requested-variables"></a>
 </h2>
+<p>A data request starts from a list of variables, provided in a
+<code>csv</code> or <code>xlsx</code> file in one of a variety of
+formats <strong>[LINK]</strong>. The first task is to read the variables
+file into an <code>ev_variables</code> <strong>[LINK]</strong>
+container, which contains all the information <code>epivaultr</code>
+needs to fetch the required data.</p>
+<p>In the example we that will hold all the information about the
+requested variables.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># create an `ev_variables` container called `vars` from the file `variables.csv`</span></span>
+<span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ev_variables.html">read_ev_variables</a></span><span class="op">(</span><span class="st">"tests/example_inputs/variables.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="connect-to-epivault">2 Connect to EpiVault<a class="anchor" aria-label="anchor" href="#connect-to-epivault"></a>
+</h2>
+<p>An EpiVault instance is a SQL Server database. To make a connection
+you specify the server name and database name of the instance you’re
+connecting to. These can be set once using <code>options</code> or can
+be passed directly to the <code>ev_connect</code> function.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># use `options` to define the connection</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>ev_server <span class="op">=</span> <span class="st">"BHTS-RESRCH22DV"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>ev_database <span class="op">=</span> <span class="st">"ResearchWarehouse"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># the connection token is returned in `con` to be used in data request functions</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ev_connect.html">ev_connect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="fetch-the-requested-data">3 Fetch the requested data<a class="anchor" aria-label="anchor" href="#fetch-the-requested-data"></a>
+</h2>
+<p>So now we have:</p>
+<table class="table">
+<colgroup>
+<col width="17%">
+<col width="82%">
+</colgroup>
+<thead><tr class="header">
+<th>object</th>
+<th>contents</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>vars</code></td>
+<td>An <code>ev_variables</code> container with the details of the data
+request</td>
+</tr>
+<tr class="even">
+<td><code>con</code></td>
+<td>An EpiVault connection token</td>
+</tr>
+</tbody>
+</table>
+<p>We’re ready to pass these to the next step to fetch the required
+data. The requested data tables and associated metadata are bundled into
+an <code>ev_data</code> container.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># create an `ev_data` container called `dat` that will hold all of the data returned</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_ev_data.html">fetch_ev_data</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">vars</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="disconnect-from-epivault">4 Disconnect from EpiVault<a class="anchor" aria-label="anchor" href="#disconnect-from-epivault"></a>
+</h2>
+<p>Now we no longer need the open connection to EpiVault, it is good
+practice to disconnect.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/ev_disconnect.html">ev_disconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="write-the-output-data-files">5 Write the output data files<a class="anchor" aria-label="anchor" href="#write-the-output-data-files"></a>
+</h2>
+<p>The data and metadata tables in <code>dat</code> can be accessed
+using various functions <strong>[LINK??]</strong>. For convenience in
+processing data requests, the <code>write_ev_data</code> function is
+provided to output all data and metadata files in a chosen file
+format.</p>
+<p>To skip metadata outputs, set <code>metadata</code> to
+<code>FALSE</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># output all data and metadata tables in Stata format using the file prefix `my_data`</span></span>
+<span><span class="fu"><a href="../reference/write_ev_data.html">write_ev_data</a></span><span class="op">(</span><span class="va">dat</span>, </span>
+<span>              path <span class="op">=</span> <span class="st">"H:/DataRequests/output"</span>,</span>
+<span>              name <span class="op">=</span> <span class="st">"my_data"</span>,</span>
+<span>              format <span class="op">=</span> <span class="st">"stata"</span>,</span>
+<span>              metadata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
