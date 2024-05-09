@@ -39,8 +39,6 @@ dat <- ev_simple_fetch(con,
                        variables = c("ParticipantType", "ethsource"))
 
 ev_disconnect()
-
-dat
 ```
 
 ## Bigger data extracts
@@ -50,11 +48,11 @@ The `ev_simple_fetch()` function provides a convenient way to quickly grab a sma
 The script below reads a variable request specification from a spreadsheet and extracts the data into a single container called an [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container.
 
 ```{r eval=FALSE}
+# read the requested variables into an `ev_variables` container called `vars`
 vars <- read_ev_variables("tests/example_inputs/variables.xlsx")
-dat <- fetch_ev_data(con, vars)
 
-# the data and metadata tables are now in an `ev_data` container called `dat`
-dat
+# extract the data and metadata tables into an `ev_data` container called `dat`
+dat <- fetch_ev_data(con, vars)
 ```
 
 ### Retrieving data from a bigger extract
@@ -88,5 +86,4 @@ meta3 <- get_ev_metadata(dat, type = "table")
 
 For more information on retrieving data and metadata from an [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container, see the [Reference](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) section.
 
-
-
+For a detailed walk-through of how to run a complete data request see the [Data requests](https://borninbradford.github.io/epivaultr/articles/data-requests.html) article.

@@ -26,7 +26,7 @@ In this guide we will run a complete data request. This involves the following s
 
 ## 1 Read the requested variables
 
-A data request starts from a list of variables, provided in a `csv` or `xlsx` file in one of a [variety of formats](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#variable-names-and-file-formats). The first task is to read the variables file into an [`ev_variables`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request) container, which contains all the information [`epivaultr`](https://github.com/BornInBradford/epivaultr) needs to fetch the required data.
+A data request starts from a list of variables, provided in a `csv` or `xlsx` file in one of a variety of [formats](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#variable-names-and-file-formats). The first task is to read the variables file into an [`ev_variables`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request) container, which contains all the information [`epivaultr`](https://github.com/BornInBradford/epivaultr) needs to fetch the required data.
 
 In the example we  that will hold all the information about the requested variables.
 
@@ -37,7 +37,7 @@ vars <- read_ev_variables("tests/example_inputs/variables.csv")
 
 ## 2 Connect to EpiVault
 
-An EpiVault instance is a SQL Server database. To make a connection you specify the server name and database name of the instance you're connecting to. These can be set once using `options()` or can be passed directly to the `ev_connect()` function. 
+An EpiVault instance is a SQL Server database. To make a connection you specify the server name and database name of the instance you're connecting to. These can be set once using `options()` or can be passed directly each time to the `ev_connect()` function. 
 
 ```{r eval=FALSE}
 # use `options` to define the connection
@@ -64,11 +64,11 @@ We're ready to pass these to the next step to fetch the required data. The reque
 dat <- fetch_ev_data(con, vars)
 ```
 
-### Missing variables and things to check
+### 3.1 Missing variables and things to check
 
-If any of the requested variables are not found in the EpiVault instance, R will return a warning message listing the variables concerned. You will need to check these and correct any variables with misspelt names or incorrect project/table references.
+If any of the requested variables are not found in the EpiVault instance, R will return a warning message listing the variables concerned. You should check these and correct any variables with misspelt names or incorrect project/table references.
 
-The `fetch_ev_data()` function also takes a `visibility` parameter. Most data requests will be run at visibility level 0, which is the default, so this parameter doesn't usually need to be specified. However, variable visibility can also lead to missing variable warnings, as if a variable has a higher visibility level set in EpiVault than the level requested, it will be reported as not found. So, a missing variable warning can also be caused by a variable requiring a higher visibility privilege than your current setting. See [Variable visibility](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#variable-visibility) for more information.
+The `fetch_ev_data()` function also takes a `visibility` parameter. Most data requests will be run at visibility level 0, which is the default, so this parameter doesn't usually need to be specified. However, variable visibility can also lead to missing variable warnings: if a variable has a higher visibility level set in EpiVault than the level requested, it will be reported as not found. So, a missing variable warning can also be caused by a variable requiring a higher visibility privilege than your current setting. See [Variable visibility](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#variable-visibility) for more information.
 
 ## 4 Disconnect from EpiVault
 
@@ -80,7 +80,7 @@ ev_disconnect(con)
 
 ## 5 Write the output data files
 
-The data and metadata tables in `dat` can be accessed using [various functions](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers). For convenience in processing data requests, you can use `write_ev_data()` to output all data and metadata files in a chosen file format.
+For convenience in processing data requests, you can use `write_ev_data()` to output all data and metadata files in a chosen file format.
 
 To skip metadata outputs, set `metadata` to `FALSE`.
 
@@ -93,3 +93,4 @@ write_ev_data(dat,
               metadata = TRUE)
 ```
 
+If more fine-grained control of outputs is needed, the data and metadata tables in `dat` can be accessed using [various `get_` functions](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers). 

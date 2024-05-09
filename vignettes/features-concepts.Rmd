@@ -16,13 +16,65 @@ knitr::opts_chunk$set(
 
 [`epivaultr`](https://github.com/BornInBradford/epivaultr) is an R package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
 
-This guide explains various features and concepts involved in using [`epivaultr`](https://github.com/BornInBradford/epivaultr).
+This guide explains various concepts and features employed by [`epivaultr`](https://github.com/BornInBradford/epivaultr).
 
 
-## Variable names and file formats
+## Working with variables
+
+### Variable naming
+
+EpiVault organises data into projects, tables and variables with the following properties:
+
+* An instance of EpiVault contains projects.
+  - Each project has a unique name *within its EpiVault instance*
+* A project contains tables.
+  - Each table has a unique name *within its project*.
+* A table contains observations in rows and variables in columns. The name of each column is the *variable name*.
+  - Each variable has a unique name *within its table*. 
+
+As each variable has a unique name within its table, the *variable name* can safely be used to refer to the variable within the context of that table. 
+
+However, within the wider context of EpiVault, the *project name* and *table name* are needed to uniquely refer to the variable. We separate these with dots, e.g. `project_name.table_name.variable_name`. We call this the *fully qualified variable name*:
+
+| Reference type | Reference | Unique within |
+|---------------------------|--------------------------|-----------|
+| *project name* | BiB_CohortInfo | EpiVault |
+| *table name* | person_info | project (BiB CohortInfo) |
+| *variable name* | Gender | table (person_info) |
+| *fully qualified variable name* | BiB_CohortInfo.person_info.Gender | EpiVault |
+
+### Variable file formats
+
+Most data requests and complex projects will start by reading a variable list from a file using `read_ev_variables()`. 
+
+Although simple data requests can be run directly in code by adding variables using `make_ev_variables()` or doing a quick grab using `ev_simple_fetch()`, using a variables file is considered more reproducible and future-proof.
+
+`read_ev_variables()` supports delimited text or MS Excel formats, which can be in one of the following structures:
+
+| Format | Column 1 | Column 2 | Column 3 |
+|--------|---------------------|
+| Single column | Fully qualified variable name | empty | empty |
+| Three columns | project name | table name | variable name |
+
+A header row is optional and `read_ev_variables()` will skip over this if the column names are obvious, e.g. `project`, `table`, `variable`, `name` etc.
+
+If `read_ev_variables()` returns an empty result then it may have encountered problems interpreting the structure. Try the following:
+
+* Remove the header row
+* Remove any blank rows from the middle of the variable list
+* Make sure there are exactly one or three columns
+* If there is one column, make sure this contains fully qualified variable names; if there are three columns, make sure these are project, table and variable *in that order*
 
 
 
+
+* If the file extension is `csv`, `txt`, or `tsv`, it will try to read the file as a delimited text file, e.g. comma- or tab-separated or fixed width. If it cannot determine th delimiter it will try to read it line by line.
+
+
+
+
+
+#### Wildcards
 
 ## Containers
 
