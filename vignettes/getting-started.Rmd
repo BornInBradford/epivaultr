@@ -31,16 +31,63 @@ devtools::install_github("BornInBradford/epivaultr")
 
 The simple script below opens an EpiVault connection, extracts a couple of variables, and disconnects from EpiVault.
 
-```{r}
+```{r eval=FALSE}
 
 con <- ev_connect(ev_server = "BHTS-RESRCH22DV", ev_database = "ResearchWarehouse")
 
 dat <- ev_simple_fetch(con, project = "BiB_CohortInfo", table = "ethnicity",
                        variables = c("ParticipantType", "ethsource"))
 
-table(dat$ethsource, dat$ParticipantType)
+dat
 
 ```
+
+## What if I need variables from a lot of tables?
+
+The `ev_simple_fetch` function provides a convenient way to quickly grab a small number of variables. If, however, your project needs a large number of variables from across many tables, you may find it easier to maintain a variables list in a separate file and read the data in using this.
+
+The script below reads a variable request specification from a spreadsheet and extracts the data into a single container called an `ev_data` container.
+
+```{r eval=FALSE}
+
+vars <- read_ev_variables("tests/example_inputs/variables.xlsx")
+dat <- fetch_ev_data(con, vars)
+
+# the data and metadata tables are now in an `ev_data` container called `dat`
+dat
+
+```
+
+### Retrieving the data
+
+The data in `dat` can be retrieved using the `epivaultr` *getter* functions.
+
+#### Get the names of the data tables
+
+```{r eval=FALSE}
+get_ev_data_names(dat)
+```
+
+#### Get a data table
+
+```{r eval=FALSE}
+dat_table <- get_ev_data(dat, df_name = "proj1.tab1")
+```
+
+#### Get metadata
+
+Various types of metadata can also be accessed from the `ev_data` container.
+
+```{r eval=FALSE}
+# get variable metadata
+meta1 <- get_ev_metadata(dat, type = "variable")
+# get category metadata
+meta2 <- get_ev_metadata(dat, type = "category")
+# get table metadata
+meta3 <- get_ev_metadata(dat, type = "table")
+```
+
+For more information on retrieving data and metadata from the `ev_data` container, see the function Reference **[LINK??]**.
 
 
 

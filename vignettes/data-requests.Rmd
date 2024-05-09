@@ -70,6 +70,12 @@ dat <- fetch_ev_data(con, vars)
 
 ```
 
+### Missing variables and things to check
+
+If any of the requested variables are not found in the EpiVault instance, R will return a warning message listing the variables concerned. You will need to check these and correct any variables with misspelt names or incorrect project/table references.
+
+The `fetch_ev_data` function also takes a `visibility` parameter. Most data requests will be run at visibility level 0, which is the default, so this parameter doesn't usually need to be specified. However, variable visibility can also lead to missing variable warnings, as if a variable has a higher visibility level set in EpiVault than the level requested, it will be reported as not found. So, a missing variable warning can also be caused by a variable requiring a higher visibility privilege than your current setting. See **[LINK]** for more information.
+
 ## 4 Disconnect from EpiVault
 
 Now we no longer need the connection to EpiVault, it is good practice to disconnect.
