@@ -91,8 +91,8 @@ following steps:</p>
 <h2 id="read-the-requested-variables">1 Read the requested variables<a class="anchor" aria-label="anchor" href="#read-the-requested-variables"></a>
 </h2>
 <p>A data request starts from a list of variables, provided in a
-<code>csv</code> or <code>xlsx</code> file in one of a <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#variable-names-and-file-formats">variety
-of formats</a>. The first task is to read the variables file into an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request"><code>ev_variables</code></a>
+<code>csv</code> or <code>xlsx</code> file in one of a variety of <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#variable-names-and-file-formats">formats</a>.
+The first task is to read the variables file into an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request"><code>ev_variables</code></a>
 container, which contains all the information <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivaultr</code></a>
 needs to fetch the required data.</p>
 <p>In the example we that will hold all the information about the
@@ -107,7 +107,8 @@ requested variables.</p>
 <p>An EpiVault instance is a SQL Server database. To make a connection
 you specify the server name and database name of the instance you’re
 connecting to. These can be set once using <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> or can
-be passed directly to the <code><a href="../reference/ev_connect.html">ev_connect()</a></code> function.</p>
+be passed directly each time to the <code><a href="../reference/ev_connect.html">ev_connect()</a></code>
+function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use `options` to define the connection</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>ev_server <span class="op">=</span> <span class="st">"BHTS-RESRCH22DV"</span><span class="op">)</span></span>
@@ -145,17 +146,17 @@ container.</p>
 <code class="sourceCode R"><span><span class="co"># create an `ev_data` container called `dat` that will hold all of the data returned</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_ev_data.html">fetch_ev_data</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">vars</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="missing-variables-and-things-to-check">Missing variables and things to check<a class="anchor" aria-label="anchor" href="#missing-variables-and-things-to-check"></a>
+<h3 id="missing-variables-and-things-to-check">3.1 Missing variables and things to check<a class="anchor" aria-label="anchor" href="#missing-variables-and-things-to-check"></a>
 </h3>
 <p>If any of the requested variables are not found in the EpiVault
 instance, R will return a warning message listing the variables
-concerned. You will need to check these and correct any variables with
+concerned. You should check these and correct any variables with
 misspelt names or incorrect project/table references.</p>
 <p>The <code><a href="../reference/fetch_ev_data.html">fetch_ev_data()</a></code> function also takes a
 <code>visibility</code> parameter. Most data requests will be run at
 visibility level 0, which is the default, so this parameter doesn’t
 usually need to be specified. However, variable visibility can also lead
-to missing variable warnings, as if a variable has a higher visibility
+to missing variable warnings: if a variable has a higher visibility
 level set in EpiVault than the level requested, it will be reported as
 not found. So, a missing variable warning can also be caused by a
 variable requiring a higher visibility privilege than your current
@@ -174,9 +175,7 @@ to disconnect.</p>
 <div class="section level2">
 <h2 id="write-the-output-data-files">5 Write the output data files<a class="anchor" aria-label="anchor" href="#write-the-output-data-files"></a>
 </h2>
-<p>The data and metadata tables in <code>dat</code> can be accessed
-using <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers">various
-functions</a>. For convenience in processing data requests, you can use
+<p>For convenience in processing data requests, you can use
 <code><a href="../reference/write_ev_data.html">write_ev_data()</a></code> to output all data and metadata files in a
 chosen file format.</p>
 <p>To skip metadata outputs, set <code>metadata</code> to
@@ -188,6 +187,9 @@ chosen file format.</p>
 <span>              name <span class="op">=</span> <span class="st">"my_data"</span>,</span>
 <span>              format <span class="op">=</span> <span class="st">"stata"</span>,</span>
 <span>              metadata <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>If more fine-grained control of outputs is needed, the data and
+metadata tables in <code>dat</code> can be accessed using <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers">various
+<code>get_</code> functions</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

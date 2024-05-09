@@ -78,11 +78,130 @@ data warehouse. It can be used for quick grabs of specific variables
 from specific tables. It can also be used to manage an entire data
 request end to end, from reading a user’s requested variables, to
 writing output files ready for shipping.</p>
-<p>This guide explains various features and concepts involved in using
-<a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivaultr</code></a>.</p>
+<p>This guide explains various concepts and features employed by <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivaultr</code></a>.</p>
 <div class="section level2">
-<h2 id="variable-names-and-file-formats">Variable names and file formats<a class="anchor" aria-label="anchor" href="#variable-names-and-file-formats"></a>
+<h2 id="working-with-variables">Working with variables<a class="anchor" aria-label="anchor" href="#working-with-variables"></a>
 </h2>
+<div class="section level3">
+<h3 id="variable-naming">Variable naming<a class="anchor" aria-label="anchor" href="#variable-naming"></a>
+</h3>
+<p>EpiVault organises data into projects, tables and variables with the
+following properties:</p>
+<ul>
+<li>An instance of EpiVault contains projects.
+<ul>
+<li>Each project has a unique name <em>within its EpiVault
+instance</em>
+</li>
+</ul>
+</li>
+<li>A project contains tables.
+<ul>
+<li>Each table has a unique name <em>within its project</em>.</li>
+</ul>
+</li>
+<li>A table contains observations in rows and variables in columns. The
+name of each column is the <em>variable name</em>.
+<ul>
+<li>Each variable has a unique name <em>within its table</em>.</li>
+</ul>
+</li>
+</ul>
+<p>As each variable has a unique name within its table, the <em>variable
+name</em> can safely be used to refer to the variable within the context
+of that table.</p>
+<p>However, within the wider context of EpiVault, the <em>project
+name</em> and <em>table name</em> are needed to uniquely refer to the
+variable. We separate these with dots,
+e.g. <code>project_name.table_name.variable_name</code>. We call this
+the <em>fully qualified variable name</em>:</p>
+<table class="table">
+<colgroup>
+<col width="42%">
+<col width="40%">
+<col width="17%">
+</colgroup>
+<thead><tr class="header">
+<th>Reference type</th>
+<th>Reference</th>
+<th>Unique within</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><em>project name</em></td>
+<td>BiB_CohortInfo</td>
+<td>EpiVault</td>
+</tr>
+<tr class="even">
+<td><em>table name</em></td>
+<td>person_info</td>
+<td>project (BiB CohortInfo)</td>
+</tr>
+<tr class="odd">
+<td><em>variable name</em></td>
+<td>Gender</td>
+<td>table (person_info)</td>
+</tr>
+<tr class="even">
+<td><em>fully qualified variable name</em></td>
+<td>BiB_CohortInfo.person_info.Gender</td>
+<td>EpiVault</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="variable-file-formats">Variable file formats<a class="anchor" aria-label="anchor" href="#variable-file-formats"></a>
+</h3>
+<p>Most data requests and complex projects will start by reading a
+variable list from a file using <code><a href="../reference/read_ev_variables.html">read_ev_variables()</a></code>.</p>
+<p>Although simple data requests can be run directly in code by adding
+variables using <code><a href="../reference/make_ev_variables.html">make_ev_variables()</a></code> or doing a quick grab
+using <code><a href="../reference/ev_simple_fetch.html">ev_simple_fetch()</a></code>, using a variables file is
+considered more reproducible and future-proof.</p>
+<p><code><a href="../reference/read_ev_variables.html">read_ev_variables()</a></code> supports delimited text or MS Excel
+formats, which can be in one of the following structures:</p>
+<table class="table">
+<thead><tr class="header">
+<th>Format</th>
+<th>Column 1</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Single column</td>
+<td>Fully qualified variable name</td>
+</tr>
+<tr class="even">
+<td>Three columns</td>
+<td>project name</td>
+</tr>
+</tbody>
+</table>
+<p>A header row is optional and <code><a href="../reference/read_ev_variables.html">read_ev_variables()</a></code> will
+skip over this if the column names are obvious,
+e.g. <code>project</code>, <code>table</code>, <code>variable</code>,
+<code>name</code> etc.</p>
+<p>If <code><a href="../reference/read_ev_variables.html">read_ev_variables()</a></code> returns an empty result then it
+may have encountered problems interpreting the structure. Try the
+following:</p>
+<ul>
+<li><p>Remove the header row</p></li>
+<li><p>Remove any blank rows from the middle of the variable
+list</p></li>
+<li><p>Make sure there are exactly one or three columns</p></li>
+<li><p>If there is one column, make sure this contains fully qualified
+variable names; if there are three columns, make sure these are project,
+table and variable <em>in that order</em></p></li>
+<li><p>If the file extension is <code>csv</code>, <code>txt</code>, or
+<code>tsv</code>, it will try to read the file as a delimited text file,
+e.g. comma- or tab-separated or fixed width. If it cannot determine th
+delimiter it will try to read it line by line.</p></li>
+</ul>
+<div class="section level4">
+<h4 id="wildcards">Wildcards<a class="anchor" aria-label="anchor" href="#wildcards"></a>
+</h4>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="containers">Containers<a class="anchor" aria-label="anchor" href="#containers"></a>
