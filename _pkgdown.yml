@@ -13,6 +13,13 @@ reference:
 - contents:
   - has_concept("data request functions")
 - title: Get data from containers
-  desc: Extract individual data and metadata tables from `ev_data` containers, or information about variables from `ev_variables` containers.
+  desc: Extract individual data and metadata tables from [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) containers, or information about variables from [`ev_variables`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request) containers.
 - contents:
   - has_concept("getters")
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - getting-started
+  - data-requests
+  - features-concepts
