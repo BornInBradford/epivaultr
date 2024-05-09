@@ -25,8 +25,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/data-requests.html">Data requests with epivaultr</a>
-    <a class="dropdown-item" href="../articles/features-concepts.html">epivaultr features and concepts</a>
-    <a class="dropdown-item" href="../articles/getting-started.html">Getting started with epivaultr</a>
+    <a class="dropdown-item" href="../articles/features-concepts.html">Concepts and features</a>
+    <a class="dropdown-item" href="../articles/getting-started.html">Getting started</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -43,9 +43,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="epivault-connections">EpiVault connections<a class="anchor" aria-label="anchor" href="#epivault-connections"></a></h2>
       
-      
+      <div class="section-desc"><p>Manage connections to an EpiVault instance</p></div>
 
       
     </div><div id="" class="section level2">
@@ -63,7 +63,18 @@
           <code><a href="ev_disconnect.html">ev_disconnect()</a></code> 
         </dt>
         <dd>Disconnect from EpiVault</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="managing-data-requests">Managing data requests<a class="anchor" aria-label="anchor" href="#managing-data-requests"></a></h2>
+      
+      <div class="section-desc"><p>Extract and manage data and metadata from EpiVault</p></div>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="ev_simple_fetch.html">ev_simple_fetch()</a></code> 
         </dt>
@@ -84,6 +95,32 @@
         </dt>
         <dd>Fetch variable metadata from EpiVault</dd>
       </dl><dl><dt>
+          
+          <code><a href="make_ev_variables.html">make_ev_variables()</a></code> 
+        </dt>
+        <dd>Make ev_variables container</dd>
+      </dl><dl><dt>
+          
+          <code><a href="read_ev_variables.html">read_ev_variables()</a></code> 
+        </dt>
+        <dd>Read variables from a file</dd>
+      </dl><dl><dt>
+          
+          <code><a href="write_ev_data.html">write_ev_data()</a></code> 
+        </dt>
+        <dd>Write data files</dd>
+      </dl></div><div class="section level2">
+      <h2 id="get-data-from-containers">Get data from containers<a class="anchor" aria-label="anchor" href="#get-data-from-containers"></a></h2>
+      
+      <div class="section-desc"><p>Extract individual data and metadata tables from <code>ev_data</code> containers, or information about variables from <code>ev_variables</code> containers.</p></div>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="get_ev_data.html">get_ev_data()</a></code> 
         </dt>
@@ -118,23 +155,9 @@
           <code><a href="get_ev_vars_df.html">get_ev_vars_df()</a></code> 
         </dt>
         <dd>Get variables data frame</dd>
-      </dl><dl><dt>
-          
-          <code><a href="make_ev_variables.html">make_ev_variables()</a></code> 
-        </dt>
-        <dd>Make ev_variables container</dd>
-      </dl><dl><dt>
-          
-          <code><a href="read_ev_variables.html">read_ev_variables()</a></code> 
-        </dt>
-        <dd>Read variables from a file</dd>
-      </dl><dl><dt>
-          
-          <code><a href="write_ev_data.html">write_ev_data()</a></code> 
-        </dt>
-        <dd>Write data files</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
