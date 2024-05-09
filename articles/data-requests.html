@@ -127,10 +127,6 @@ be passed directly to the <code>ev_connect</code> function.</p>
 <col width="17%">
 <col width="82%">
 </colgroup>
-<thead><tr class="header">
-<th>object</th>
-<th>contents</th>
-</tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>vars</code></td>
@@ -150,12 +146,29 @@ an <code>ev_data</code> container.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="co"># create an `ev_data` container called `dat` that will hold all of the data returned</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_ev_data.html">fetch_ev_data</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">vars</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="missing-variables-and-things-to-check">Missing variables and things to check<a class="anchor" aria-label="anchor" href="#missing-variables-and-things-to-check"></a>
+</h3>
+<p>If any of the requested variables are not found in the EpiVault
+instance, R will return a warning message listing the variables
+concerned. You will need to check these and correct any variables with
+misspelt names or incorrect project/table references.</p>
+<p>The <code>fetch_ev_data</code> function also takes a
+<code>visibility</code> parameter. Most data requests will be run at
+visibility level 0, which is the default, so this parameter doesn’t
+usually need to be specified. However, variable visibility can also lead
+to missing variable warnings, as if a variable has a higher visibility
+level set in EpiVault than the level requested, it will be reported as
+not found. So, a missing variable warning can also be caused by a
+variable requiring a higher visibility privilege than your current
+setting. See <strong>[LINK]</strong> for more information.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="disconnect-from-epivault">4 Disconnect from EpiVault<a class="anchor" aria-label="anchor" href="#disconnect-from-epivault"></a>
 </h2>
-<p>Now we no longer need the open connection to EpiVault, it is good
-practice to disconnect.</p>
+<p>Now we no longer need the connection to EpiVault, it is good practice
+to disconnect.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/ev_disconnect.html">ev_disconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
