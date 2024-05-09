@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(epivaultr)
 ```
 
 `epivaultr` is an R package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
@@ -25,5 +26,22 @@ In this guide we will install `epivaultr`, connect to EpiVault, and do a quick e
 ```{r eval=FALSE}
 devtools::install_github("BornInBradford/epivaultr")
 ```
+
+## Quick extract
+
+The simple script below opens an EpiVault connection, extracts a couple of variables, and disconnects from EpiVault.
+
+```{r}
+
+con <- ev_connect(ev_server = "BHTS-RESRCH22DV", ev_database = "ResearchWarehouse")
+
+dat <- ev_simple_fetch(con, project = "BiB_CohortInfo", table = "ethnicity",
+                       variables = c("ParticipantType", "ethsource"))
+
+table(dat$ethsource, dat$ParticipantType)
+
+```
+
+
 
 
