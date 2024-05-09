@@ -1,4 +1,18 @@
 url: https://borninbradford.github.io/epivaultr/
 template:
   bootstrap: 5
-
+  bootswatch: spacelab
+  theme: a11y-dark
+reference:
+- title: EpiVault connections
+  desc: Manage connections to an EpiVault instance
+- contents:
+  - has_concept("EpiVault connectors")
+- title: Managing data requests
+  desc: Extract and manage data and metadata from EpiVault
+- contents:
+  - has_concept("data request functions")
+- title: Get data from containers
+  desc: Extract individual data and metadata tables from `ev_data` containers, or information about variables from `ev_variables` containers.
+- contents:
+  - has_concept("getters")

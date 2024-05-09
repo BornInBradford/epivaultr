@@ -1,8 +1,8 @@
 ---
-title: "epivaultr features and concepts"
+title: "Concepts and features"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{epivaultr features and concepts}
+  %\VignetteIndexEntry{Concepts and features}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,9 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-`epivaultr` is an R package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
+[`epivaultr`](https://github.com/BornInBradford/epivaultr) is an R package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
 
-This guide explains various features and concepts involved in using `epivaultr`.
+This guide explains various features and concepts involved in using [`epivaultr`](https://github.com/BornInBradford/epivaultr).
 
 
 ## Variable names and file formats
@@ -24,14 +24,15 @@ This guide explains various features and concepts involved in using `epivaultr`.
 
 
 
+## Containers
 
-## `ev_variables` container - the data request
-
-
-## `ev_data` container - the data extract
+### `ev_variables` - the data request
 
 
-## Visibility
+### `ev_data` - the data extract
+
+
+## Variable visibility
 
 
 

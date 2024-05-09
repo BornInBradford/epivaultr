@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`epivaultr` is an R package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
+[`epivaultr`](https://github.com/BornInBradford/epivaultr) is an R package used to extract data from EpiVault, the Born in Bradford data warehouse. It can be used for quick grabs of specific variables from specific tables. It can also be used to manage an entire data request end to end, from reading a user's requested variables, to writing output files ready for shipping.
 
 In this guide we will run a complete data request. This involves the following steps:
 
@@ -26,7 +26,7 @@ In this guide we will run a complete data request. This involves the following s
 
 ## 1 Read the requested variables
 
-A data request starts from a list of variables, provided in a `csv` or `xlsx` file in one of a variety of formats **[LINK]**. The first task is to read the variables file into an `ev_variables` **[LINK]** container, which contains all the information `epivaultr` needs to fetch the required data.
+A data request starts from a list of variables, provided in a `csv` or `xlsx` file in one of a variety of formats **[LINK]**. The first task is to read the variables file into an `ev_variables` **[LINK]** container, which contains all the information [`epivaultr`](https://github.com/BornInBradford/epivaultr) needs to fetch the required data.
 
 In the example we  that will hold all the information about the requested variables.
 
