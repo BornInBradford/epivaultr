@@ -28,7 +28,7 @@ devtools::install_github("BornInBradford/epivaultr")
 
 ## A quick extract
 
-The simple script below opens an EpiVault connection, extracts a couple of variables, and disconnects from EpiVault.
+The script below opens an EpiVault connection, extracts a couple of variables, and disconnects from EpiVault.
 
 ```{r eval=FALSE}
 con <- ev_connect(ev_server = "BHTS-RESRCH22DV", ev_database = "ResearchWarehouse")
@@ -45,9 +45,9 @@ dat
 
 ## Bigger data extracts
 
-The `ev_simple_fetch` function provides a convenient way to quickly grab a small number of variables. If, however, your project needs a large number of variables from across many tables, you may find it easier to maintain a variables list in a separate file and read the data in using this.
+The `ev_simple_fetch()` function provides a convenient way to quickly grab a small number of variables. If, however, your project needs a large number of variables from across many tables, you may find it easier to maintain a variables list in a separate file and read the data in using this.
 
-The script below reads a variable request specification from a spreadsheet and extracts the data into a single container called an `ev_data` container.
+The script below reads a variable request specification from a spreadsheet and extracts the data into a single container called an [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container.
 
 ```{r eval=FALSE}
 vars <- read_ev_variables("tests/example_inputs/variables.xlsx")
@@ -59,7 +59,7 @@ dat
 
 ### Retrieving data from a bigger extract
 
-The data in `dat` can be retrieved using the *get_* functions.
+The data in `dat` can be retrieved using the [get_](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions.
 
 #### Get the names of the data tables
 
@@ -75,7 +75,7 @@ dat_table <- get_ev_data(dat, df_name = "proj1.tab1")
 
 #### Get metadata
 
-Various types of metadata can also be accessed from the `ev_data` container.
+Various types of metadata can also be accessed from the [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container.
 
 ```{r eval=FALSE}
 # get variable metadata
@@ -86,7 +86,7 @@ meta2 <- get_ev_metadata(dat, type = "category")
 meta3 <- get_ev_metadata(dat, type = "table")
 ```
 
-For more information on retrieving data and metadata from the `ev_data` container, see the [Reference](https://borninbradford.github.io/epivaultr/reference/) section.
+For more information on retrieving data and metadata from the [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container, see the [Reference](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) section.
 
 
 

@@ -35,6 +35,8 @@ This guide explains various features and concepts involved in using [`epivaultr`
 ## Variable visibility
 
 
+## Required columns
+
 
 
 
