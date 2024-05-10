@@ -135,7 +135,7 @@ the <em>fully qualified variable name</em>:</p>
 <tr class="even">
 <td><em>table name</em></td>
 <td>person_info</td>
-<td>project (BiB CohortInfo)</td>
+<td>project (BiB_CohortInfo)</td>
 </tr>
 <tr class="odd">
 <td><em>variable name</em></td>
@@ -208,10 +208,10 @@ delimiter it will try to read it line by line.</p>
 <h4 id="wildcards">Wildcards<a class="anchor" aria-label="anchor" href="#wildcards"></a>
 </h4>
 <p>Wildcards can be used in variable names to capture groups of
-variables from a single table in one go. <em>?</em> matches a single
-character and <em>*</em> matches any number of characters. Currently,
-wildcards can only be used in variable names, not table or project
-names.</p>
+variables from a single table in one go. <code>?</code> matches a single
+character and <code>*</code> matches any number of characters.
+Currently, wildcards can only be used in variable names, not table or
+project names.</p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -219,11 +219,11 @@ names.</p>
 </colgroup>
 <tbody>
 <tr class="odd">
-<td><code>BiB_Baseline_base_m_survey.*</code></td>
+<td><code>BiB_Baseline.base_m_survey.*</code></td>
 <td>Returns all variables in the table BiB_Baseline_base_m_survey</td>
 </tr>
 <tr class="even">
-<td><code>BiB_Baseline_base_m_survey.eth*</code></td>
+<td><code>BiB_Baseline.base_m_survey.eth*</code></td>
 <td>Returns all variables with the prefix <code>eth</code> in the table
 BiB_Baseline_base_m_survey</td>
 </tr>
@@ -328,8 +328,8 @@ important dimensions such as date or age.</p>
 <p>To check for required variables in a data request, you can use
 fetch_ev_meta_vars() to return the variable metadata and inspect the
 <code>required</code> column (1=required). Alternatively, you can access
-the same variable metadata from an <code>ev_data</code> container using
-get_ev_metadata().</p>
+the same variable metadata from an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract"><code>ev_data</code></a>
+container using get_ev_metadata().</p>
 </div>
 <div class="section level2">
 <h2 id="containers">Containers<a class="anchor" aria-label="anchor" href="#containers"></a>
@@ -385,21 +385,21 @@ basis of the data request.</td>
 <td>get_ev_variables()</td>
 </tr>
 <tr class="even">
-<td>^</td>
+<td></td>
 <td><code>projects</code></td>
 <td>A vector of names of the projects containing the requested
 variables.</td>
 <td>get_ev_projects()</td>
 </tr>
 <tr class="odd">
-<td>^</td>
+<td></td>
 <td><code>tables</code></td>
 <td>A vector of names of the tables containing the requested
 variables.</td>
 <td>get_ev_tables()</td>
 </tr>
 <tr class="even">
-<td>^</td>
+<td></td>
 <td><code>vars_df</code></td>
 <td>A data frame constructed from the above information, with columns
 containing the fully qualified variable name, project name, table name
@@ -435,7 +435,7 @@ request.</td>
 <td>get_ev_data()</td>
 </tr>
 <tr class="even">
-<td>^</td>
+<td></td>
 <td><code>metadata</code></td>
 <td>A list of three data frames containing metadata about the data
 returned: <code>variable</code> contains variable-level metadata for all
@@ -445,7 +445,7 @@ metadata about all the tables used in the request.</td>
 <td>get_ev_metadata()</td>
 </tr>
 <tr class="odd">
-<td>^</td>
+<td></td>
 <td><code>request</code></td>
 <td>A copy of the <code>ev_variables</code> container used for the data
 request.</td>
@@ -473,8 +473,8 @@ frame called <code>dat</code> in two ways:</p>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_request</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">proj1.tab1</span></span></code></pre></div>
 <p>If the internal structure of the containers changes in future, the
 implementation of the associated <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers"><code>get_</code></a>
-functions will change as well, so previous code that uses these should
-still run OK. But any code that addresses the container elements
+functions will change in parallel, so previous code that uses these
+should still run OK. But any code that addresses the container elements
 directly may break.</p>
 </div>
 </div>
