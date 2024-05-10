@@ -34,10 +34,10 @@ EpiVault organises data into projects, tables and variables with the following p
 
 As each variable has a unique name within its table, the *variable name* can safely be used to refer to the variable within the context of that table. 
 
-However, within the wider context of EpiVault, the *project name* and *table name* are needed to uniquely refer to the variable. We separate these with dots, e.g. `project_name.table_name.variable_name`. We call this the *fully qualified variable name*:
+However, within the wider context of EpiVault, the *project name* and *table name* are needed to uniquely refer to the variable. We separate these with dots, e.g. `project_name.table_name.variable_name` ande call this the *fully qualified variable name*:
 
 | Reference type | Reference | Unique within |
-|---------------------------|--------------------------|-----------|
+|-----------------------|----------------------|--------------|
 | *project name* | BiB_CohortInfo | EpiVault |
 | *table name* | person_info | project (BiB CohortInfo) |
 | *variable name* | Gender | table (person_info) |
@@ -47,13 +47,13 @@ However, within the wider context of EpiVault, the *project name* and *table nam
 
 Most data requests and complex projects will start by reading a variable list from a file using `read_ev_variables()`. 
 
-Although simple data requests can be run directly in code by adding variables using `make_ev_variables()` or doing a quick grab using `ev_simple_fetch()`, using a variables file is considered more reproducible and future-proof.
+Although simple data requests can be run directly in code by selecting variables using `make_ev_variables()` or doing a quick table query using `ev_simple_fetch()`, maintaining a variables file is considered more reproducible and future-proof.
 
 `read_ev_variables()` supports delimited text or MS Excel formats, which can be in one of the following structures:
 
 | Format | Column 1 | Column 2 | Column 3 |
-|--------|---------------------|
-| Single column | Fully qualified variable name | empty | empty |
+|--------|------------------|----------|----------|
+| Single column | Fully qualified variable name | *none* | *none* |
 | Three columns | project name | table name | variable name |
 
 A header row is optional and `read_ev_variables()` will skip over this if the column names are obvious, e.g. `project`, `table`, `variable`, `name` etc.
@@ -61,34 +61,101 @@ A header row is optional and `read_ev_variables()` will skip over this if the co
 If `read_ev_variables()` returns an empty result then it may have encountered problems interpreting the structure. Try the following:
 
 * Remove the header row
-* Remove any blank rows from the middle of the variable list
+* Remove any blank rows that occur before the end of the file
 * Make sure there are exactly one or three columns
-* If there is one column, make sure this contains fully qualified variable names; if there are three columns, make sure these are project, table and variable *in that order*
+* If there is one column, make sure this contains fully qualified variable names
+* If there are three columns, make sure these are project, table and variable *in that order*. For three-column text formats make sure a recognised delimiter is used, e.g. a tab or a comma.
 
-
-
-
-* If the file extension is `csv`, `txt`, or `tsv`, it will try to read the file as a delimited text file, e.g. comma- or tab-separated or fixed width. If it cannot determine th delimiter it will try to read it line by line.
-
-
-
-
+If the file extension is `csv`, `txt`, or `tsv`, it will try to read the file as a delimited text file, e.g. comma- or tab-separated or fixed width. If it cannot determine the delimiter it will try to read it line by line.
 
 #### Wildcards
 
+Wildcards can be used in variable names to capture groups of variables from a single table in one go. *?* matches a single character and *\** matches any number of characters. Currently, wildcards can only be used in variable names, not table or project names.
+
+| | |
+|------|------|
+| `BiB_Baseline_base_m_survey.*` | Returns all variables in the table BiB_Baseline_base_m_survey |
+| `BiB_Baseline_base_m_survey.eth*` | Returns all variables with the prefix `eth` in the table BiB_Baseline_base_m_survey |
+| `BiB_Baseline.base_m_survey.agem?_mbqall` | Returns `BiB_Baseline.base_m_survey.agemm_mbqall` and `BiB_Baseline.base_m_survey.agemy_mbqall` |
+| `BiB_Baseline.base_?_survey.*` | *Not supported:* wildcards can only be used in the variable name part |
+
+Wildcards in the variable name will work in either one column or three column variables file formats.
+
+## Variable visibility
+
+Variable visibility is the concept used to manage fine-grained data access permissions in EpiVault. Every variable has a visibility level assigned in the variable metadata from 0 to 9. The visibility value reflects the level of elevated privileges a user needs to be able to access it. So:
+
+| variable visibility | meaning |
+|---------------|--------------------------------|
+| 0 | All users can see this variable |
+| 5 | All users with a privilege level of 5 and above can see this variable |
+| 9 | Only users with the highest privilege level can see this variable |
+
+And, conversely:
+
+| user privilege level | meaning |
+|--------------------|--------------------------|
+| 0 | Can only access variables with visibility level 0 |
+| 5 | Can access all variables with visibility level 5 and below |
+| 9 | Can access all variables |
+
+For the most part, only visibility levels 0 and 9 are used. Variables that any user can access are given visibility level 0. Sensitive variables that only users with elevated privileges can access are given visibility level 9.
+
+When [`epivaultr`](https://github.com/BornInBradford/epivaultr) queries EpiVault, i.e. via the [fetch_](https://borninbradford.github.io/epivaultr/reference/index.html#managing-data-requests) functions, a `visibility` parameter is required. This defaults to 0, meaning it will only return variables that are visible to all users. If you need to access a sensitive variable, e.g. date of birth, you will need to assign a higher value to the `visibility` parameter, probably 9. For this to work, your user account will need certain elevated privileges to be assigned within the EpiVault database.
+
+## Required columns
+
+A variable can be indicated as *required* in its metadata. Whenever data from a table is queried, all required columns will be returned, as well as those requested.
+
+For many tables, the only required column will be a `person_id` column or some similar record id. But often there may be other required variables, such as additional row identifiers, or important dimensions such as date or age.
+
+To check for required variables in a data request, you can use fetch_ev_meta_vars() to return the variable metadata and inspect the `required` column (1=required). Alternatively, you can access the same variable metadata from an `ev_data` container using get_ev_metadata().
+
 ## Containers
 
+A *container* in [`epivaultr`](https://github.com/BornInBradford/epivaultr) is a collection of nested lists. They contain various data frames and vectors that are bundled together for the convenience of being able to pass them together to function calls. The contents can be accessed using a set of [`get_`](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions.
+
+There are two main types of container:
+
+| | |
+|------|------|
+| [`ev_variables`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request) | The data request: contains the variables requried for a data request, with associated information |
+| [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) | The data extract: contains the data returned by a data request, with associated metadata |
+
+
 ### `ev_variables` - the data request
+
+| | | description | retrieve using |
+|------|------|--------------------------------|--------------|
+| `ev_variables` | `variables` | A vector containing fully qualified variable names. This is the basis of the data request. | get_ev_variables() |
+|^               | `projects`  | A vector of names of the projects containing the requested variables. | get_ev_projects() |
+|^               | `tables`    | A vector of names of the tables containing the requested variables. | get_ev_tables() |
+|^               | `vars_df`   | A data frame constructed from the above information, with columns containing the fully qualified variable name, project name, table name and variable name for each variable requested. | get_ev_vars_df() |
 
 
 ### `ev_data` - the data extract
 
+| | | description | retrieve using |
+|------|------|--------------------------------|--------------|
+| `ev_data` | `data` | A list of data frames, one per table returned by the data request. | get_ev_data() |
+|^          | `metadata` | A list of three data frames containing metadata about the data returned: `variable` contains variable-level metadata for all variables; `category` contains value labels used by all the categorical variables in the request; `table` contains metadata about all the tables used in the request. | get_ev_metadata() |
+|^          | `request` | A copy of the `ev_variables` container used for the data request. | get_ev_request() |
 
-## Variable visibility
+### A note on `get_` functions
 
+As the containers are just lists objects, you can access the contents directly using `$` notation. However, use of the [`get_`](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions wherever possible is recommended, as this will be more robust to any future changes in the internal structure of the containers.
 
-## Required columns
+For example, say we have an `ev_data` container called `data_request` that contains a data frame called `proj1.tab1`. We can access this and assign it to a data frame called `dat` in two ways:
 
+```{r eval=FALSE}
+# using the get_ function - recommended, won't break in future
+dat <- get_ev_data(data_request, df_name = "proj1.tab1")
+
+# does the same thing - but not recommended, may break in future
+dat <- data_request$data$proj1.tab1
+```
+
+If the internal structure of the containers changes in future, the implementation of the associated [`get_`](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions will change as well, so previous code that uses these should still run OK. But any code that addresses the container elements directly may break.
 
 
 

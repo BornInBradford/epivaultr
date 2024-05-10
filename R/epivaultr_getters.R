@@ -305,3 +305,43 @@ get_ev_metadata <- function(ev_data, type = character(0)) {
   
 }
 
+
+
+#' Get ev_variables request
+#' 
+#' Returns the \code{ev_variables} container used to create an \code{ev_data} container. 
+#' 
+#' Every \code{ev_data} container stores a copy of the \code{ev_variables} container used to create it, and this function is used to access it directly.  
+#'
+#' @param ev_data An \code{ev_data} container
+#'
+#' @return An \code{ev_variables} container
+#' @export
+#' 
+#' @seealso \code{\link{fetch_ev_data}} to create an \code{ev_data} container.
+#' @family {getters}
+#'
+#' @examples
+#' \dontrun{
+#' 
+#' con <- ev_connect()
+#' 
+#' # read a variable data request file
+#' vars <- read_ev_variables("path/to/variables/file")
+#' # fetch the data from EpiVault
+#' dat <- fetch_ev_data(con, vars)
+#' 
+#' # get variable request - a copy of the ev_variables container (vars) used to build dat
+#' get_ev_request(dat)
+#' 
+#' }
+#'
+get_ev_request <- function(ev_data) {
+  
+  if(class(ev_data) != "ev_data") stop("`ev_data` must be an `ev_data` container e.g. created using the `fetch_ev_data` function")
+  
+  vars <- ev_data$request
+  
+  return(vars)
+  
+}

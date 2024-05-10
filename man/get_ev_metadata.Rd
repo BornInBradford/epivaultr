@@ -55,6 +55,7 @@ Other {getters}:
 \code{\link{get_ev_data_names}()},
 \code{\link{get_ev_data}()},
 \code{\link{get_ev_projects}()},
+\code{\link{get_ev_request}()},
 \code{\link{get_ev_tables}()},
 \code{\link{get_ev_variables}()},
 \code{\link{get_ev_vars_df}()}

@@ -93,4 +93,4 @@ write_ev_data(dat,
               metadata = TRUE)
 ```
 
-If more fine-grained control of outputs is needed, the data and metadata tables in `dat` can be accessed using [various `get_` functions](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers). 
+If more fine-grained control of outputs is needed, the data and metadata tables in `dat` can be accessed using various [`get_`](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions. 
