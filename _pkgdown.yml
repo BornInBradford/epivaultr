@@ -1,7 +1,7 @@
 url: https://borninbradford.github.io/epivaultr/
 template:
   bootstrap: 5
-  bootswatch: spacelab
+  bootswatch: cosmo
   theme: a11y-dark
 reference:
 - title: EpiVault connections
@@ -23,3 +23,5 @@ articles:
   - getting-started
   - data-requests
   - features-concepts
+home:
+  sidebar: FALSE

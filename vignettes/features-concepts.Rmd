@@ -37,7 +37,7 @@ As each variable has a unique name within its table, the *variable name* can saf
 However, within the wider context of EpiVault, the *project name* and *table name* are needed to uniquely refer to the variable. We separate these with dots, e.g. `project_name.table_name.variable_name` ande call this the *fully qualified variable name*:
 
 | Reference type | Reference | Unique within |
-|-----------------------|----------------------|--------------|
+|-----------------------|-----------------------|--------------|
 | *project name* | BiB_CohortInfo | EpiVault |
 | *table name* | person_info | project (BiB_CohortInfo) |
 | *variable name* | Gender | table (person_info) |
@@ -107,9 +107,9 @@ When [`epivaultr`](https://github.com/BornInBradford/epivaultr) queries EpiVault
 
 A variable can be indicated as *required* in its metadata. Whenever data from a table is queried, all required columns will be returned, as well as those requested.
 
-For many tables, the only required column will be a `person_id` column or some similar record id. But often there may be other required variables, such as additional row identifiers, or important dimensions such as date or age.
+For many tables, the only required column will be a record id such as a `person_id`. But often there may be other required variables, such as additional row identifiers, or important dimensions such as date or age.
 
-To check for required variables in a data request, you can use fetch_ev_meta_vars() to return the variable metadata and inspect the `required` column (1=required). Alternatively, you can access the same variable metadata from an [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container using get_ev_metadata().
+If you need to check for required variables in a data request, you can use [`fetch_ev_meta_vars()`](https://borninbradford.github.io/epivaultr/reference/fetch_ev_meta_vars.html) to return the variable metadata and inspect the `required` column (1=required). Alternatively, you can access the same variable metadata from an [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container using [`get_ev_metadata()`](https://borninbradford.github.io/epivaultr/reference/get_ev_metadata.html).
 
 ## Containers
 
@@ -127,19 +127,19 @@ There are two main types of container:
 
 | | | description | retrieve using |
 |------|------|--------------------------------|--------------|
-| `ev_variables` | `variables` | A vector containing fully qualified variable names. This is the basis of the data request. | get_ev_variables() |
-|                | `projects`  | A vector of names of the projects containing the requested variables. | get_ev_projects() |
-|                | `tables`    | A vector of names of the tables containing the requested variables. | get_ev_tables() |
-|                | `vars_df`   | A data frame constructed from the above information, with columns containing the fully qualified variable name, project name, table name and variable name for each variable requested. | get_ev_vars_df() |
+| `ev_variables` | `variables` | A vector containing fully qualified variable names. This is the basis of the data request. | [`get_ev_variables()`](https://borninbradford.github.io/epivaultr/reference/get_ev_variables.html) |
+|                | `projects`  | A vector of names of the projects containing the requested variables. | [`get_ev_projects()`](https://borninbradford.github.io/epivaultr/reference/get_ev_projects.html) |
+|                | `tables`    | A vector of names of the tables containing the requested variables. | [`get_ev_tables()`](https://borninbradford.github.io/epivaultr/reference/get_ev_tables.html) |
+|                | `vars_df`   | A data frame constructed from the above information, with columns containing the fully qualified variable name, project name, table name and variable name for each variable requested. | [`get_ev_vars_df()`](https://borninbradford.github.io/epivaultr/reference/get_ev_vars_df.html) |
 
 
 ### `ev_data` - the data extract
 
 | | | description | retrieve using |
 |------|------|--------------------------------|--------------|
-| `ev_data` | `data` | A list of data frames, one per table returned by the data request. | get_ev_data() |
-|           | `metadata` | A list of three data frames containing metadata about the data returned: `variable` contains variable-level metadata for all variables; `category` contains value labels used by all the categorical variables in the request; `table` contains metadata about all the tables used in the request. | get_ev_metadata() |
-|           | `request` | A copy of the `ev_variables` container used for the data request. | get_ev_request() |
+| `ev_data` | `data` | A list of data frames, one per table returned by the data request. | [`get_ev_data()`](https://borninbradford.github.io/epivaultr/reference/get_ev_data.html) |
+|           | `metadata` | A list of three data frames containing metadata about the data returned: `variable` contains variable-level metadata for all variables; `category` contains value labels used by all the categorical variables in the request; `table` contains metadata about all the tables used in the request. | [`get_ev_metadata()`](https://borninbradford.github.io/epivaultr/reference/get_ev_metadata.html) |
+|           | `request` | A copy of the `ev_variables` container used for the data request. | [`get_ev_request()`](https://borninbradford.github.io/epivaultr/reference/get_ev_request.html) |
 
 ### A note on `get_` functions
 
@@ -155,7 +155,7 @@ dat <- get_ev_data(data_request, df_name = "proj1.tab1")
 dat <- data_request$data$proj1.tab1
 ```
 
-If the internal structure of the containers changes in future, the implementation of the associated [`get_`](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions will change in parallel, so previous code that uses these should still run OK. But any code that addresses the container elements directly may break.
+If the internal structure of the containers changes in future, the implementation of the associated [`get_`](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions will change in parallel, so previous code that uses these should still run OK. But any code that addresses the container elements directly using `$` notation may break.
 
 
 
