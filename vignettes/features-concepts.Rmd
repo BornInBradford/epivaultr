@@ -145,7 +145,7 @@ There are two main types of container:
 
 As the containers are just lists objects, you can access the contents directly using `$` notation. However, use of the [`get_`](https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers) functions wherever possible is recommended, as this will be more robust to any future changes in the internal structure of the containers.
 
-For example, say we have an `ev_data` container called `data_request` that contains a data frame called `proj1.tab1`. We can access this and assign it to a data frame called `dat` in two ways:
+For example, say we have an [`ev_data`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract) container called `data_request` that contains a data frame called `proj1.tab1`. We can access this and assign it to a data frame called `dat` in two ways:
 
 ```{r eval=FALSE}
 # using the get_ function - recommended, won't break in future
