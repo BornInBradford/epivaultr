@@ -462,10 +462,10 @@ request.</td>
 directly using <code>$</code> notation. However, use of the <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers"><code>get_</code></a>
 functions wherever possible is recommended, as this will be more robust
 to any future changes in the internal structure of the containers.</p>
-<p>For example, say we have an <code>ev_data</code> container called
-<code>data_request</code> that contains a data frame called
-<code>proj1.tab1</code>. We can access this and assign it to a data
-frame called <code>dat</code> in two ways:</p>
+<p>For example, say we have an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract"><code>ev_data</code></a>
+container called <code>data_request</code> that contains a data frame
+called <code>proj1.tab1</code>. We can access this and assign it to a
+data frame called <code>dat</code> in two ways:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># using the get_ function - recommended, won't break in future</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ev_data.html">get_ev_data</a></span><span class="op">(</span><span class="va">data_request</span>, df_name <span class="op">=</span> <span class="st">"proj1.tab1"</span><span class="op">)</span></span>
