@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">epivaultr</a>
 
@@ -118,7 +118,7 @@ the <em>fully qualified variable name</em>:</p>
 <table class="table">
 <colgroup>
 <col width="38%">
-<col width="37%">
+<col width="38%">
 <col width="23%">
 </colgroup>
 <thead><tr class="header">
@@ -321,15 +321,16 @@ the EpiVault database.</p>
 <p>A variable can be indicated as <em>required</em> in its metadata.
 Whenever data from a table is queried, all required columns will be
 returned, as well as those requested.</p>
-<p>For many tables, the only required column will be a
-<code>person_id</code> column or some similar record id. But often there
-may be other required variables, such as additional row identifiers, or
-important dimensions such as date or age.</p>
-<p>To check for required variables in a data request, you can use
-fetch_ev_meta_vars() to return the variable metadata and inspect the
-<code>required</code> column (1=required). Alternatively, you can access
-the same variable metadata from an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract"><code>ev_data</code></a>
-container using get_ev_metadata().</p>
+<p>For many tables, the only required column will be a record id such as
+a <code>person_id</code>. But often there may be other required
+variables, such as additional row identifiers, or important dimensions
+such as date or age.</p>
+<p>If you need to check for required variables in a data request, you
+can use <a href="https://borninbradford.github.io/epivaultr/reference/fetch_ev_meta_vars.html"><code>fetch_ev_meta_vars()</code></a>
+to return the variable metadata and inspect the <code>required</code>
+column (1=required). Alternatively, you can access the same variable
+metadata from an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract"><code>ev_data</code></a>
+container using <a href="https://borninbradford.github.io/epivaultr/reference/get_ev_metadata.html"><code>get_ev_metadata()</code></a>.</p>
 </div>
 <div class="section level2">
 <h2 id="containers">Containers<a class="anchor" aria-label="anchor" href="#containers"></a>
@@ -382,21 +383,21 @@ associated metadata</td>
 <td><code>variables</code></td>
 <td>A vector containing fully qualified variable names. This is the
 basis of the data request.</td>
-<td>get_ev_variables()</td>
+<td><a href="https://borninbradford.github.io/epivaultr/reference/get_ev_variables.html"><code>get_ev_variables()</code></a></td>
 </tr>
 <tr class="even">
 <td></td>
 <td><code>projects</code></td>
 <td>A vector of names of the projects containing the requested
 variables.</td>
-<td>get_ev_projects()</td>
+<td><a href="https://borninbradford.github.io/epivaultr/reference/get_ev_projects.html"><code>get_ev_projects()</code></a></td>
 </tr>
 <tr class="odd">
 <td></td>
 <td><code>tables</code></td>
 <td>A vector of names of the tables containing the requested
 variables.</td>
-<td>get_ev_tables()</td>
+<td><a href="https://borninbradford.github.io/epivaultr/reference/get_ev_tables.html"><code>get_ev_tables()</code></a></td>
 </tr>
 <tr class="even">
 <td></td>
@@ -404,7 +405,7 @@ variables.</td>
 <td>A data frame constructed from the above information, with columns
 containing the fully qualified variable name, project name, table name
 and variable name for each variable requested.</td>
-<td>get_ev_vars_df()</td>
+<td><a href="https://borninbradford.github.io/epivaultr/reference/get_ev_vars_df.html"><code>get_ev_vars_df()</code></a></td>
 </tr>
 </tbody>
 </table>
@@ -432,7 +433,7 @@ and variable name for each variable requested.</td>
 <td><code>data</code></td>
 <td>A list of data frames, one per table returned by the data
 request.</td>
-<td>get_ev_data()</td>
+<td><a href="https://borninbradford.github.io/epivaultr/reference/get_ev_data.html"><code>get_ev_data()</code></a></td>
 </tr>
 <tr class="even">
 <td></td>
@@ -442,14 +443,14 @@ returned: <code>variable</code> contains variable-level metadata for all
 variables; <code>category</code> contains value labels used by all the
 categorical variables in the request; <code>table</code> contains
 metadata about all the tables used in the request.</td>
-<td>get_ev_metadata()</td>
+<td><a href="https://borninbradford.github.io/epivaultr/reference/get_ev_metadata.html"><code>get_ev_metadata()</code></a></td>
 </tr>
 <tr class="odd">
 <td></td>
 <td><code>request</code></td>
 <td>A copy of the <code>ev_variables</code> container used for the data
 request.</td>
-<td>get_ev_request()</td>
+<td><a href="https://borninbradford.github.io/epivaultr/reference/get_ev_request.html"><code>get_ev_request()</code></a></td>
 </tr>
 </tbody>
 </table>
@@ -475,7 +476,7 @@ frame called <code>dat</code> in two ways:</p>
 implementation of the associated <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers"><code>get_</code></a>
 functions will change in parallel, so previous code that uses these
 should still run OK. But any code that addresses the container elements
-directly may break.</p>
+directly using <code>$</code> notation may break.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
