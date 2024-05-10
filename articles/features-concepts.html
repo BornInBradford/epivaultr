@@ -113,13 +113,13 @@ of that table.</p>
 <p>However, within the wider context of EpiVault, the <em>project
 name</em> and <em>table name</em> are needed to uniquely refer to the
 variable. We separate these with dots,
-e.g. <code>project_name.table_name.variable_name</code>. We call this
+e.g. <code>project_name.table_name.variable_name</code> ande call this
 the <em>fully qualified variable name</em>:</p>
 <table class="table">
 <colgroup>
-<col width="42%">
-<col width="40%">
-<col width="17%">
+<col width="38%">
+<col width="37%">
+<col width="23%">
 </colgroup>
 <thead><tr class="header">
 <th>Reference type</th>
@@ -155,25 +155,31 @@ the <em>fully qualified variable name</em>:</p>
 </h3>
 <p>Most data requests and complex projects will start by reading a
 variable list from a file using <code><a href="../reference/read_ev_variables.html">read_ev_variables()</a></code>.</p>
-<p>Although simple data requests can be run directly in code by adding
-variables using <code><a href="../reference/make_ev_variables.html">make_ev_variables()</a></code> or doing a quick grab
-using <code><a href="../reference/ev_simple_fetch.html">ev_simple_fetch()</a></code>, using a variables file is
-considered more reproducible and future-proof.</p>
+<p>Although simple data requests can be run directly in code by
+selecting variables using <code><a href="../reference/make_ev_variables.html">make_ev_variables()</a></code> or doing a
+quick table query using <code><a href="../reference/ev_simple_fetch.html">ev_simple_fetch()</a></code>, maintaining a
+variables file is considered more reproducible and future-proof.</p>
 <p><code><a href="../reference/read_ev_variables.html">read_ev_variables()</a></code> supports delimited text or MS Excel
 formats, which can be in one of the following structures:</p>
 <table class="table">
 <thead><tr class="header">
 <th>Format</th>
 <th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>Single column</td>
 <td>Fully qualified variable name</td>
+<td><em>none</em></td>
+<td><em>none</em></td>
 </tr>
 <tr class="even">
 <td>Three columns</td>
 <td>project name</td>
+<td>table name</td>
+<td>variable name</td>
 </tr>
 </tbody>
 </table>
@@ -185,45 +191,292 @@ e.g. <code>project</code>, <code>table</code>, <code>variable</code>,
 may have encountered problems interpreting the structure. Try the
 following:</p>
 <ul>
-<li><p>Remove the header row</p></li>
-<li><p>Remove any blank rows from the middle of the variable
-list</p></li>
-<li><p>Make sure there are exactly one or three columns</p></li>
-<li><p>If there is one column, make sure this contains fully qualified
-variable names; if there are three columns, make sure these are project,
-table and variable <em>in that order</em></p></li>
-<li><p>If the file extension is <code>csv</code>, <code>txt</code>, or
-<code>tsv</code>, it will try to read the file as a delimited text file,
-e.g. comma- or tab-separated or fixed width. If it cannot determine th
-delimiter it will try to read it line by line.</p></li>
+<li>Remove the header row</li>
+<li>Remove any blank rows that occur before the end of the file</li>
+<li>Make sure there are exactly one or three columns</li>
+<li>If there is one column, make sure this contains fully qualified
+variable names</li>
+<li>If there are three columns, make sure these are project, table and
+variable <em>in that order</em>. For three-column text formats make sure
+a recognised delimiter is used, e.g. a tab or a comma.</li>
 </ul>
+<p>If the file extension is <code>csv</code>, <code>txt</code>, or
+<code>tsv</code>, it will try to read the file as a delimited text file,
+e.g. comma- or tab-separated or fixed width. If it cannot determine the
+delimiter it will try to read it line by line.</p>
 <div class="section level4">
 <h4 id="wildcards">Wildcards<a class="anchor" aria-label="anchor" href="#wildcards"></a>
 </h4>
+<p>Wildcards can be used in variable names to capture groups of
+variables from a single table in one go. <em>?</em> matches a single
+character and <em>*</em> matches any number of characters. Currently,
+wildcards can only be used in variable names, not table or project
+names.</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><code>BiB_Baseline_base_m_survey.*</code></td>
+<td>Returns all variables in the table BiB_Baseline_base_m_survey</td>
+</tr>
+<tr class="even">
+<td><code>BiB_Baseline_base_m_survey.eth*</code></td>
+<td>Returns all variables with the prefix <code>eth</code> in the table
+BiB_Baseline_base_m_survey</td>
+</tr>
+<tr class="odd">
+<td><code>BiB_Baseline.base_m_survey.agem?_mbqall</code></td>
+<td>Returns <code>BiB_Baseline.base_m_survey.agemm_mbqall</code> and
+<code>BiB_Baseline.base_m_survey.agemy_mbqall</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>BiB_Baseline.base_?_survey.*</code></td>
+<td>
+<em>Not supported:</em> wildcards can only be used in the variable
+name part</td>
+</tr>
+</tbody>
+</table>
+<p>Wildcards in the variable name will work in either one column or
+three column variables file formats.</p>
 </div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="containers">Containers<a class="anchor" aria-label="anchor" href="#containers"></a>
-</h2>
-<div class="section level3">
-<h3 id="ev_variables---the-data-request">
-<code>ev_variables</code> - the data request<a class="anchor" aria-label="anchor" href="#ev_variables---the-data-request"></a>
-</h3>
-</div>
-<div class="section level3">
-<h3 id="ev_data---the-data-extract">
-<code>ev_data</code> - the data extract<a class="anchor" aria-label="anchor" href="#ev_data---the-data-extract"></a>
-</h3>
 </div>
 </div>
 <div class="section level2">
 <h2 id="variable-visibility">Variable visibility<a class="anchor" aria-label="anchor" href="#variable-visibility"></a>
 </h2>
+<p>Variable visibility is the concept used to manage fine-grained data
+access permissions in EpiVault. Every variable has a visibility level
+assigned in the variable metadata from 0 to 9. The visibility value
+reflects the level of elevated privileges a user needs to be able to
+access it. So:</p>
+<table class="table">
+<colgroup>
+<col width="31%">
+<col width="68%">
+</colgroup>
+<thead><tr class="header">
+<th>variable visibility</th>
+<th>meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>All users can see this variable</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>All users with a privilege level of 5 and above can see this
+variable</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Only users with the highest privilege level can see this
+variable</td>
+</tr>
+</tbody>
+</table>
+<p>And, conversely:</p>
+<table class="table">
+<thead><tr class="header">
+<th>user privilege level</th>
+<th>meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Can only access variables with visibility level 0</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Can access all variables with visibility level 5 and below</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Can access all variables</td>
+</tr>
+</tbody>
+</table>
+<p>For the most part, only visibility levels 0 and 9 are used. Variables
+that any user can access are given visibility level 0. Sensitive
+variables that only users with elevated privileges can access are given
+visibility level 9.</p>
+<p>When <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivaultr</code></a>
+queries EpiVault, i.e. via the <a href="https://borninbradford.github.io/epivaultr/reference/index.html#managing-data-requests">fetch_</a>
+functions, a <code>visibility</code> parameter is required. This
+defaults to 0, meaning it will only return variables that are visible to
+all users. If you need to access a sensitive variable, e.g. date of
+birth, you will need to assign a higher value to the
+<code>visibility</code> parameter, probably 9. For this to work, your
+user account will need certain elevated privileges to be assigned within
+the EpiVault database.</p>
 </div>
 <div class="section level2">
 <h2 id="required-columns">Required columns<a class="anchor" aria-label="anchor" href="#required-columns"></a>
 </h2>
+<p>A variable can be indicated as <em>required</em> in its metadata.
+Whenever data from a table is queried, all required columns will be
+returned, as well as those requested.</p>
+<p>For many tables, the only required column will be a
+<code>person_id</code> column or some similar record id. But often there
+may be other required variables, such as additional row identifiers, or
+important dimensions such as date or age.</p>
+<p>To check for required variables in a data request, you can use
+fetch_ev_meta_vars() to return the variable metadata and inspect the
+<code>required</code> column (1=required). Alternatively, you can access
+the same variable metadata from an <code>ev_data</code> container using
+get_ev_metadata().</p>
+</div>
+<div class="section level2">
+<h2 id="containers">Containers<a class="anchor" aria-label="anchor" href="#containers"></a>
+</h2>
+<p>A <em>container</em> in <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivaultr</code></a>
+is a collection of nested lists. They contain various data frames and
+vectors that are bundled together for the convenience of being able to
+pass them together to function calls. The contents can be accessed using
+a set of <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers"><code>get_</code></a>
+functions.</p>
+<p>There are two main types of container:</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request"><code>ev_variables</code></a></td>
+<td>The data request: contains the variables requried for a data
+request, with associated information</td>
+</tr>
+<tr class="even">
+<td><a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract"><code>ev_data</code></a></td>
+<td>The data extract: contains the data returned by a data request, with
+associated metadata</td>
+</tr>
+</tbody>
+</table>
+<div class="section level3">
+<h3 id="ev_variables---the-data-request">
+<code>ev_variables</code> - the data request<a class="anchor" aria-label="anchor" href="#ev_variables---the-data-request"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="10%">
+<col width="10%">
+<col width="55%">
+<col width="24%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th></th>
+<th>description</th>
+<th>retrieve using</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>ev_variables</code></td>
+<td><code>variables</code></td>
+<td>A vector containing fully qualified variable names. This is the
+basis of the data request.</td>
+<td>get_ev_variables()</td>
+</tr>
+<tr class="even">
+<td>^</td>
+<td><code>projects</code></td>
+<td>A vector of names of the projects containing the requested
+variables.</td>
+<td>get_ev_projects()</td>
+</tr>
+<tr class="odd">
+<td>^</td>
+<td><code>tables</code></td>
+<td>A vector of names of the tables containing the requested
+variables.</td>
+<td>get_ev_tables()</td>
+</tr>
+<tr class="even">
+<td>^</td>
+<td><code>vars_df</code></td>
+<td>A data frame constructed from the above information, with columns
+containing the fully qualified variable name, project name, table name
+and variable name for each variable requested.</td>
+<td>get_ev_vars_df()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="ev_data---the-data-extract">
+<code>ev_data</code> - the data extract<a class="anchor" aria-label="anchor" href="#ev_data---the-data-extract"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="10%">
+<col width="10%">
+<col width="55%">
+<col width="24%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th></th>
+<th>description</th>
+<th>retrieve using</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>ev_data</code></td>
+<td><code>data</code></td>
+<td>A list of data frames, one per table returned by the data
+request.</td>
+<td>get_ev_data()</td>
+</tr>
+<tr class="even">
+<td>^</td>
+<td><code>metadata</code></td>
+<td>A list of three data frames containing metadata about the data
+returned: <code>variable</code> contains variable-level metadata for all
+variables; <code>category</code> contains value labels used by all the
+categorical variables in the request; <code>table</code> contains
+metadata about all the tables used in the request.</td>
+<td>get_ev_metadata()</td>
+</tr>
+<tr class="odd">
+<td>^</td>
+<td><code>request</code></td>
+<td>A copy of the <code>ev_variables</code> container used for the data
+request.</td>
+<td>get_ev_request()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="a-note-on-get_-functions">A note on <code>get_</code> functions<a class="anchor" aria-label="anchor" href="#a-note-on-get_-functions"></a>
+</h3>
+<p>As the containers are just lists objects, you can access the contents
+directly using <code>$</code> notation. However, use of the <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers"><code>get_</code></a>
+functions wherever possible is recommended, as this will be more robust
+to any future changes in the internal structure of the containers.</p>
+<p>For example, say we have an <code>ev_data</code> container called
+<code>data_request</code> that contains a data frame called
+<code>proj1.tab1</code>. We can access this and assign it to a data
+frame called <code>dat</code> in two ways:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># using the get_ function - recommended, won't break in future</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ev_data.html">get_ev_data</a></span><span class="op">(</span><span class="va">data_request</span>, df_name <span class="op">=</span> <span class="st">"proj1.tab1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># does the same thing - but not recommended, may break in future</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_request</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">proj1.tab1</span></span></code></pre></div>
+<p>If the internal structure of the containers changes in future, the
+implementation of the associated <a href="https://borninbradford.github.io/epivaultr/reference/index.html#get-data-from-containers"><code>get_</code></a>
+functions will change as well, so previous code that uses these should
+still run OK. But any code that addresses the container elements
+directly may break.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
