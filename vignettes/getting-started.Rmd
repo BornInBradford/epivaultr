@@ -28,7 +28,7 @@ devtools::install_github("BornInBradford/epivaultr")
 
 If a firewall is blocking the download of the source tarball, you may be able to download and install a source zip manually as follows:
 
-* Navigate to the [`epivault` GitHub page](https://github.com/BornInBradford/epivaultr)
+* Navigate to the [`epivaultr` GitHub page](https://github.com/BornInBradford/epivaultr)
 * Down the right-hand side you'll see the *Releases* listed. Click on the *Release* you wish to install
 * Under *Assets* click `Source code (zip)` to download the source zip and save it locally
 * Run the following command, substituting the local path to the source zip:
@@ -42,6 +42,8 @@ devtools::install_local("path/to/source/zip")
 The script below opens an EpiVault connection, extracts a couple of variables, and disconnects from EpiVault.
 
 ```{r eval=FALSE}
+library(epivaultr)
+
 con <- ev_connect(ev_server = "BHTS-RESRCH22DV", ev_database = "ResearchWarehouse")
 
 dat <- ev_simple_fetch(con, 

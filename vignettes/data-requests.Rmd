@@ -28,9 +28,11 @@ In this guide we will run a complete data request. This involves the following s
 
 A data request starts from a list of variables, provided in a `csv` or `xlsx` file in one of a variety of [formats](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#variable-names-and-file-formats). The first task is to read the variables file into an [`ev_variables`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request) container, which contains all the information [`epivaultr`](https://github.com/BornInBradford/epivaultr) needs to fetch the required data.
 
-In the example we  that will hold all the information about the requested variables.
+In the example we create an [`ev_variables`](https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request) container called `vars` that will hold all the information about the requested variables.
 
 ```{r eval=FALSE}
+library(epivaultr)
+
 # create an `ev_variables` container called `vars` from the file `variables.csv`
 vars <- read_ev_variables("tests/example_inputs/variables.csv")
 ```
