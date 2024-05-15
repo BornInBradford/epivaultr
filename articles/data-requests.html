@@ -95,10 +95,13 @@ following steps:</p>
 The first task is to read the variables file into an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request"><code>ev_variables</code></a>
 container, which contains all the information <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivaultr</code></a>
 needs to fetch the required data.</p>
-<p>In the example we that will hold all the information about the
-requested variables.</p>
+<p>In the example we create an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_variables---the-data-request"><code>ev_variables</code></a>
+container called <code>vars</code> that will hold all the information
+about the requested variables.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># create an `ev_variables` container called `vars` from the file `variables.csv`</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://borninbradford.github.io/epivaultr/">epivaultr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create an `ev_variables` container called `vars` from the file `variables.csv`</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ev_variables.html">read_ev_variables</a></span><span class="op">(</span><span class="st">"tests/example_inputs/variables.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

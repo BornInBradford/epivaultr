@@ -92,7 +92,7 @@ package:</p>
 <p>If a firewall is blocking the download of the source tarball, you may
 be able to download and install a source zip manually as follows:</p>
 <ul>
-<li>Navigate to the <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivault</code>
+<li>Navigate to the <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivaultr</code>
 GitHub page</a>
 </li>
 <li>Down the right-hand side you’ll see the <em>Releases</em> listed.
@@ -111,7 +111,9 @@ zip:</li>
 <p>The script below opens an EpiVault connection, extracts a couple of
 variables, and disconnects from EpiVault.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ev_connect.html">ev_connect</a></span><span class="op">(</span>ev_server <span class="op">=</span> <span class="st">"BHTS-RESRCH22DV"</span>, ev_database <span class="op">=</span> <span class="st">"ResearchWarehouse"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://borninbradford.github.io/epivaultr/">epivaultr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ev_connect.html">ev_connect</a></span><span class="op">(</span>ev_server <span class="op">=</span> <span class="st">"BHTS-RESRCH22DV"</span>, ev_database <span class="op">=</span> <span class="st">"ResearchWarehouse"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ev_simple_fetch.html">ev_simple_fetch</a></span><span class="op">(</span><span class="va">con</span>, </span>
 <span>                       project <span class="op">=</span> <span class="st">"BiB_CohortInfo"</span>, </span>
