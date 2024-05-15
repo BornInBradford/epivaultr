@@ -89,13 +89,28 @@ can be installed from GitHub using the <code>devtools</code>
 package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"BornInBradford/epivaultr"</span><span class="op">)</span></span></code></pre></div>
+<p>If a firewall is blocking the download of the source tarball, you may
+be able to download and install a source zip manually as follows:</p>
+<ul>
+<li>Navigate to the <a href="https://github.com/BornInBradford/epivaultr" class="external-link"><code>epivault</code>
+GitHub page</a>
+</li>
+<li>Down the right-hand side you’ll see the <em>Releases</em> listed.
+Click on the <em>Release</em> you wish to install</li>
+<li>Under <em>Assets</em> click <code>Source code (zip)</code> to
+download the source zip and save it locally</li>
+<li>Run the following command, substituting the local path to the source
+zip:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_local</span><span class="op">(</span><span class="st">"path/to/source/zip"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="a-quick-extract">A quick extract<a class="anchor" aria-label="anchor" href="#a-quick-extract"></a>
 </h2>
 <p>The script below opens an EpiVault connection, extracts a couple of
 variables, and disconnects from EpiVault.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ev_connect.html">ev_connect</a></span><span class="op">(</span>ev_server <span class="op">=</span> <span class="st">"BHTS-RESRCH22DV"</span>, ev_database <span class="op">=</span> <span class="st">"ResearchWarehouse"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ev_simple_fetch.html">ev_simple_fetch</a></span><span class="op">(</span><span class="va">con</span>, </span>
@@ -116,7 +131,7 @@ data in using this.</p>
 <p>The script below reads a variable request specification from a
 spreadsheet and extracts the data into a single container called an <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract"><code>ev_data</code></a>
 container.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># read the requested variables into an `ev_variables` container called `vars`</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ev_variables.html">read_ev_variables</a></span><span class="op">(</span><span class="st">"tests/example_inputs/variables.xlsx"</span><span class="op">)</span></span>
 <span></span>
@@ -130,13 +145,13 @@ functions.</p>
 <div class="section level4">
 <h4 id="get-the-names-of-the-data-tables">Get the names of the data tables<a class="anchor" aria-label="anchor" href="#get-the-names-of-the-data-tables"></a>
 </h4>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_ev_data_names.html">get_ev_data_names</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-a-data-table">Get a data table<a class="anchor" aria-label="anchor" href="#get-a-data-table"></a>
 </h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ev_data.html">get_ev_data</a></span><span class="op">(</span><span class="va">dat</span>, df_name <span class="op">=</span> <span class="st">"proj1.tab1"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -144,7 +159,7 @@ functions.</p>
 </h4>
 <p>Various types of metadata can also be accessed from the <a href="https://borninbradford.github.io/epivaultr/articles/features-concepts.html#ev_data---the-data-extract"><code>ev_data</code></a>
 container.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get variable metadata</span></span>
 <span><span class="va">meta1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ev_metadata.html">get_ev_metadata</a></span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span>
 <span><span class="co"># get category metadata</span></span>
