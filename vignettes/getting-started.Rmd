@@ -49,9 +49,9 @@ con <- ev_connect(ev_server = "BHTS-RESRCH22DV", ev_database = "ResearchWarehous
 dat <- ev_simple_fetch(con, 
                        project = "BiB_CohortInfo", 
                        table = "ethnicity",
-                       variables = c("ParticipantType", "ethsource"))
+                       variables = c("participant_type", "ethsource"))
 
-ev_disconnect()
+ev_disconnect(con)
 ```
 
 ## Bigger data extracts
