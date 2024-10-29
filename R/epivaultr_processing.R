@@ -379,9 +379,6 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
     type_col <- paste0("sql_type_vis", query_vis)
     sql_type <- dplyr::select(meta_tabs, !!!type_col)[t, 1]
     
-    # do we need to filter?
-    if(length(tab_var_filter) == tab_nvars) tab_var_filter <- character(0)
-    
     if(sql_type == "table") tab_data <- fetch_ev_table(con, project = tab_project, table = tab_table, 
                                                        visibility = query_vis, variables = tab_var_filter)
     if(sql_type == "procedure") tab_data <- fetch_ev_procedure(con, project = tab_project, table = tab_table, 
