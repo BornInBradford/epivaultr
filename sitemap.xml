@@ -1,84 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/404.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/articles/data-requests.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/articles/features-concepts.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/articles/getting-started.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/index.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/ev_connect.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/ev_disconnect.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/ev_simple_fetch.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/fetch_ev_data.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/fetch_ev_meta_tabs.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/fetch_ev_meta_vars.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_data.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_data_names.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_metadata.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_projects.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_request.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_tables.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_variables.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/get_ev_vars_df.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/make_ev_variables.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/read_ev_variables.html</loc>
-  </url>
-  <url>
-    <loc>https://borninbradford.github.io/epivaultr/reference/write_ev_data.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://borninbradford.github.io/epivaultr/404.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/LICENSE-text.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/LICENSE.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/articles/data-requests.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/articles/features-concepts.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/articles/getting-started.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/articles/index.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/authors.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/index.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/ev_connect.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/ev_disconnect.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/ev_simple_fetch.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/fetch_ev_data.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/fetch_ev_meta_tabs.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/fetch_ev_meta_vars.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_data.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_data_names.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_metadata.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_projects.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_request.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_tables.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_variables.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/get_ev_vars_df.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/index.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/make_ev_variables.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/read_ev_variables.html</loc></url>
+<url><loc>https://borninbradford.github.io/epivaultr/reference/write_ev_data.html</loc></url>
 </urlset>
+
