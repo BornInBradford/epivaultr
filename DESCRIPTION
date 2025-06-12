@@ -1,6 +1,6 @@
 Package: epivaultr
 Title: Extract EpiVault data
-Version: 0.1
+Version: 0.2
 Authors@R: 
     person(given = "Dan", family = "Mason", email = "dan.mason@bthft.nhs.uk", role = c("aut", "cre"))
 Description: Tools and functions for extracting data from EpiVault, the Born in Bradford research data warehouse.

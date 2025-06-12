@@ -102,7 +102,7 @@ sql_make_select <- function(cols) {
   
   if(!is.null(cols) & !any(is.na(cols)) & length(cols) > 0) {
     
-    sql_select <- paste0(cols, collapse = ", ")
+    sql_select <- paste0("[", cols, "]", collapse = ", ")
     
   } else {
     
@@ -408,7 +408,7 @@ fetch_ev_data <- function(con, ev_vars, visibility = 0) {
 
 fetch_ev_table <- function(con, project, table, visibility = 0, variables = character(0)) {
   
-  query_tab <- paste0("data_vis", visibility, ".", project, "__", table)
+  query_tab <- paste0("[data_vis", visibility, "].[", project, "__", table, "]")
   
   sql <- paste0("select ", sql_make_select(variables),
                 " from ", query_tab)
@@ -426,7 +426,7 @@ fetch_ev_table <- function(con, project, table, visibility = 0, variables = char
 
 fetch_ev_procedure <- function(con, project, table, visibility = 0, variables = character(0)) {
   
-  query_tab <- paste0("data_vis", visibility, ".", project, "__", table, "__wide")
+  query_tab <- paste0("[data_vis", visibility, "].[", project, "__", table, "__wide]")
   
   sql <- paste0("exec ", query_tab)
   
